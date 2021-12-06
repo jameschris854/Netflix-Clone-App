@@ -11,6 +11,8 @@ import Games from './src/screens/Games.js';
 import News from './src/screens/News.js';
 import Laughs from './src/screens/Laughs.js';
 import Downloads from './src/screens/Dowloads.js';
+import {NativeBaseProvider} from 'native-base';
+
 const App = () => {
   const Tab = createBottomTabNavigator();
 
@@ -98,24 +100,26 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator screenOptions={tabOptions} initialRouteName="Home">
-        {tabData.map(tab => (
-          <Tab.Screen
-            options={{
-              tabBarLabel: tab.name,
-              tabBarIcon: ({focused, color}) =>
-                focused ? (
-                  <tab.focusedIcon color={color} />
-                ) : (
-                  <tab.unFocusedIcon color={color} />
-                ),
-            }}
-            name={tab.name}
-            size={30}
-            component={tab.component}
-          />
-        ))}
-      </Tab.Navigator>
+      <NativeBaseProvider>
+        <Tab.Navigator screenOptions={tabOptions} initialRouteName="Home">
+          {tabData.map(tab => (
+            <Tab.Screen
+              options={{
+                tabBarLabel: tab.name,
+                tabBarIcon: ({focused, color}) =>
+                  focused ? (
+                    <tab.focusedIcon color={color} />
+                  ) : (
+                    <tab.unFocusedIcon color={color} />
+                  ),
+              }}
+              name={tab.name}
+              size={30}
+              component={tab.component}
+            />
+          ))}
+        </Tab.Navigator>
+      </NativeBaseProvider>
     </NavigationContainer>
   );
 };
