@@ -6,29 +6,24 @@ import {Avatar, Image} from 'native-base';
 
 const HeaderScroll = ({scrollData}) => {
   const [top, setTop] = useState(new Animated.Value(0));
-//   const pos = new Animated.Value(0)
+  // const pos = new Animated.Value(0)
 
   useEffect(() => {
-        console.log(scrollData);
         if (scrollData && scrollData.velocity.y > 0) {
-            console.log('hi');
-            let e = -50
-        //   setTop(e)
+          // setTop(e)
           Animated.timing(top, {
             toValue: -50,
             duration: 100,
             useNativeDriver:true
           }).start();
         }else  if (scrollData && scrollData.velocity.y < 0) {
-          let e = 0
-        //   setTop(e)
+          // setTop(e)
           Animated.timing(top, {
             toValue: 0,
             duration: 100,
             useNativeDriver:true
           }).start();
         }
-      
     },[scrollData])
 
 
