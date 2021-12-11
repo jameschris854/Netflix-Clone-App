@@ -12,6 +12,7 @@ import News from './src/screens/News.js';
 import Laughs from './src/screens/Laughs.js';
 import Downloads from './src/screens/Dowloads.js';
 import {NativeBaseProvider,StatusBar} from 'native-base';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const App = () => {
   const Tab = createBottomTabNavigator();
@@ -97,6 +98,7 @@ const App = () => {
   ];
 
   return (
+    <SafeAreaProvider >
     <NavigationContainer>
       <NativeBaseProvider>
         <StatusBar  backgroundColor='#000' barStyle={'default'} animated={true} hidden={false} translucent={false}/>
@@ -120,6 +122,7 @@ const App = () => {
         </Tab.Navigator>
       </NativeBaseProvider>
     </NavigationContainer>
+    </SafeAreaProvider>
   );
 };
 
