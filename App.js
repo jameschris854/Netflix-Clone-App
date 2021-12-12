@@ -13,6 +13,8 @@ import Laughs from './src/screens/Laughs.js';
 import Downloads from './src/screens/Dowloads.js';
 import {NativeBaseProvider,StatusBar} from 'native-base';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { Provider } from 'mobx-react';
+import commonStore from './src/store/commonStore.js';
 
 const App = () => {
   const Tab = createBottomTabNavigator();
@@ -98,6 +100,7 @@ const App = () => {
   ];
 
   return (
+    <Provider commonStore={commonStore}>
     <SafeAreaProvider >
     <NavigationContainer>
       <NativeBaseProvider>
@@ -124,6 +127,7 @@ const App = () => {
       </NativeBaseProvider>
     </NavigationContainer>
     </SafeAreaProvider>
+    </Provider>
   );
 };
 

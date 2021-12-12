@@ -15,16 +15,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {SafeAreaView} from 'react-native';
 import {LinearGradient, Rect, Defs, Svg, Stop} from 'react-native-svg';
 import PosterOptions from '../components/PosterOptions';
-
-const Home = () => {
+import {inject, observer} from 'mobx-react';
+const Home = ({commonStore}) => {
   const [poster, setPoster] = useState(null);
-  const [movieData, setMovieData] = useState([]);
   const scrollOffset = useSharedValue(0);
   useEffect(() => {
-    
     const posterInterval = async () => {
       try {
-        setPoster(posterCollection[rand(20)]);
+        setPoster(commonStore.newList[rand(20)]);
       } catch (e) {
         console.error(e);
       }
@@ -41,18 +39,14 @@ const Home = () => {
   const init = async () => {
     console.log('init----------');
     try {
-      movies = await Sync.getMovies();
-      console.log(movies);
-      posterCollection = movies.data.results;
-      setMovieData(movies.data.results);
-      setPoster(posterCollection[rand(20)]);
+      await commonStore.initHome();
+      setPoster(commonStore.newList[rand(20)]);
     } catch (e) {
       console.error('init', e);
     }
   };
 
   const scrollStyle = useAnimatedStyle(() => {
-    // console.log(scrollOffset.value);
     return {
       transform: [
         {
@@ -74,7 +68,6 @@ const Home = () => {
   });
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
-  console.log(screenWidth);
   console.log(poster);
   return (
     <>
@@ -140,11 +133,7 @@ const Home = () => {
             </Text>
           </View>
         </Animated.View>
-        {/* <HeaderScroll scrollData={animatedStyles} /> */}
-        {/* <Animated.View style={[{height:50,width:50,backgroundColor:'blue'},animatedStyles]} /> */}
-        {/* <Button onPress={() => (offset.value = Math.random())} title="Move" /> */}
-
-        {poster && movieData.length && (
+        {(poster && commonStore.newList?.length && commonStore.popularList?.length) ? (
           <Animated.ScrollView
             style={{
               backgroundColor: '#000',
@@ -155,11 +144,13 @@ const Home = () => {
               justifyContent: 'flex-start',
             }}
             onScroll={scrollHandler}>
-            <View style={{width: '100%', height: screenHeight-250}}>
+            <View style={{width: '100%', height: screenHeight - 250}}>
               <Image
                 key={poster.id}
                 // source={{uri: `https://image.tmdb.org/t/p/w500/9xaAT3V3I9xxqnNiEjCivNFfdlh.jpg`}}
-                source={{uri: `https://image.tmdb.org/t/p/w500/${poster.poster_path}`}}
+                source={{
+                  uri: `https://image.tmdb.org/t/p/w500/${poster.poster_path}`,
+                }}
                 backgroundColor={'red'}
                 height={'100%'}
                 width={'100%'}
@@ -172,9 +163,9 @@ const Home = () => {
                   height: 180,
                   width: screenWidth + 10,
                   bottom: -1,
-                  left:0
+                  left: 0,
                 }}>
-                <Svg height="180" width={screenWidth+10}>
+                <Svg height="180" width={screenWidth + 10}>
                   <Defs>
                     <LinearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
                       <Stop
@@ -182,7 +173,11 @@ const Home = () => {
                         stopColor="rgb(0,0,0,0.9)"
                         stopOpacity="0"
                       />
-                      <Stop offset="0.99" stopColor="rgb(0,0,0,0.9)" stopOpacity="0.9" />
+                      <Stop
+                        offset="0.99"
+                        stopColor="rgb(0,0,0,0.9)"
+                        stopOpacity="0.9"
+                      />
                     </LinearGradient>
                   </Defs>
                   <Rect
@@ -193,20 +188,14 @@ const Home = () => {
                 </Svg>
               </View>
             </View>
-              <PosterOptions details={poster} />
-            <CommonRow
-              data={movieData.slice(0, movieData.length / 2)}
-              title={'New This Week'}
-            />
-            <CommonRow
-              data={movieData.slice(movieData.length / 2, movieData.length)}
-              title={'New This Week'}
-            />
+            <PosterOptions details={poster} />
+            <CommonRow data={commonStore.newList} title={'New This Week'} />
+            <CommonRow data={commonStore.popularList} title={'Popular on Netflix'} />
             <Text onPress={() => init()} key={2} style={{color: '#ffff'}}>
               Home
             </Text>
           </Animated.ScrollView>
-        )}
+        ) : null}
       </SafeAreaView>
     </>
   );
@@ -237,4 +226,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default inject('commonStore')(observer(Home));

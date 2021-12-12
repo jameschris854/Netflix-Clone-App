@@ -111,9 +111,9 @@ const PosterOptions = ({details}) => {
           <View
             style={[{display: 'flex', flexDirection: 'row'}, styles.center]}>
             <Text style={{color: '#ffff', marginHorizontal: 5}}>{res}</Text>
-            {i !== res.length - 1 && (
+            {(i !== res.length - 1)? (
               <CircleIcon size="1.5" color={'rgb(255,191,0)'} />
-            )}
+            ):null}
           </View>
         ))}
       </>
