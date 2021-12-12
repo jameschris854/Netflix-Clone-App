@@ -106,6 +106,7 @@ const App = () => {
           {tabData.map(tab => (
             <Tab.Screen
               options={{
+                tabBarLabelStyle:{bottom:5},
                 tabBarLabel: tab.name,
                 tabBarIcon: ({focused, color}) =>
                   focused ? (
@@ -129,9 +130,9 @@ const App = () => {
 const styles = StyleSheet.create({
   tabBarStyle: {
     position: 'absolute',
-    height: 55,
+    height: 65,
+    paddingVertical:10,
     borderTopColor: '#121212',
-    paddingBottom: 0,
     backgroundColor: '#121212',
   },
 });

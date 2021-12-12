@@ -1,4 +1,11 @@
-import {Button, CheckIcon, Box, InfoIcon, Circle, CircleIcon} from 'native-base';
+import {
+  Button,
+  CheckIcon,
+  Box,
+  InfoIcon,
+  Circle,
+  CircleIcon,
+} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -100,11 +107,15 @@ const PosterOptions = ({details}) => {
   const Generes = () => {
     return (
       <>
-        {categories.map( (res,i) => <View style={[{display: 'flex',flexDirection:'row'},styles.center]}>
-            <Text style={{color:'#ffff',marginHorizontal:5}}>{res}</Text>
-            {i !== res.length-1 && <CircleIcon size="1.5" color={'rgb(255,191,0)'} />}
+        {categories.map((res, i) => (
+          <View
+            style={[{display: 'flex', flexDirection: 'row'}, styles.center]}>
+            <Text style={{color: '#ffff', marginHorizontal: 5}}>{res}</Text>
+            {i !== res.length - 1 && (
+              <CircleIcon size="1.5" color={'rgb(255,191,0)'} />
+            )}
           </View>
-        )}
+        ))}
       </>
     );
   };
@@ -117,12 +128,12 @@ const PosterOptions = ({details}) => {
             display: 'flex',
             width: '100%',
             height: 60,
-            top:-30
+            top: -40,
           }}>
           <View
             style={{
               display: 'flex',
-              flexDirection:'row',
+              flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
               width: '100%',
@@ -132,7 +143,7 @@ const PosterOptions = ({details}) => {
           </View>
           <View
             style={[
-              {display: 'flex', flexDirection: 'row'},
+              {display: 'flex', flexDirection: 'row',marginTop:15},
               {justifyContent: 'space-evenly', alignItems: 'center'},
             ]}>
             <View

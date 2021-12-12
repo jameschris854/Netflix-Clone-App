@@ -42,8 +42,10 @@ const Home = () => {
     console.log('init----------');
     try {
       movies = await Sync.getMovies();
+      console.log(movies);
       posterCollection = movies.data.results;
       setMovieData(movies.data.results);
+      setPoster(posterCollection[rand(20)]);
     } catch (e) {
       console.error('init', e);
     }
@@ -71,6 +73,7 @@ const Home = () => {
     },
   });
   const screenWidth = Dimensions.get('window').width;
+  const screenHeight = Dimensions.get('window').height;
   console.log(screenWidth);
   console.log(poster);
   return (
@@ -152,7 +155,7 @@ const Home = () => {
               justifyContent: 'flex-start',
             }}
             onScroll={scrollHandler}>
-            <View style={{width: '100%', height: 450}}>
+            <View style={{width: '100%', height: screenHeight-250}}>
               <Image
                 key={poster.id}
                 // source={{uri: `https://image.tmdb.org/t/p/w500/9xaAT3V3I9xxqnNiEjCivNFfdlh.jpg`}}
@@ -168,7 +171,7 @@ const Home = () => {
                   position: 'absolute',
                   height: 180,
                   width: screenWidth + 10,
-                  bottom: 0,
+                  bottom: -1,
                   left:0
                 }}>
                 <Svg height="180" width={screenWidth+10}>
