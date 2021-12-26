@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {ArrowBackIcon, Box, Image, Text} from 'native-base';
-import {FlatList, View, StyleSheet} from 'react-native';
+import {Actionsheet, ArrowBackIcon, Box, Image, Text} from 'native-base';
+import {FlatList, View, StyleSheet, Pressable} from 'react-native';
 import {LinearGradient, Rect, Defs, Svg, Stop} from 'react-native-svg';
+import {inject,observer} from 'mobx-react'
 
-const CommonRow = ({data, title, type}) => {
+const CommonRow = ({data, title, type,commonStore}) => {
   useEffect(() => {
     let isDownload = false
 
@@ -22,10 +23,12 @@ const CommonRow = ({data, title, type}) => {
     console.log(data);
   }, []);
 
-  const card = ({poster, type ,id}) => {
+  const card = ({poster, type ,key}) => {
     const width = 260
+    console.log(key);
     return (
       <>
+      <Pressable onPress={() => commonStore.openDetailsSheet(key)}>
         {type === 'download' ? (
           <Box rounded="lg" width={width} height="175" padding="1" marginRight="1">
             <Svg style={{position:'absolute',top:0,zIndex:1}} height="175" width={width}>
@@ -73,7 +76,7 @@ const CommonRow = ({data, title, type}) => {
               borderRadius={5}
               resizeMethod="scale"
               resizeMode="cover"
-              key={id}
+              key={key}
               source={{uri: poster}}
               height={'100%'}
               width={'100%'}
@@ -81,6 +84,7 @@ const CommonRow = ({data, title, type}) => {
             />
           </Box>
         )}
+      </Pressable>
       </>
     );
   };
@@ -96,6 +100,7 @@ const CommonRow = ({data, title, type}) => {
             return card({
               poster: item.item.poster,
               type: item.item.type,
+              key:item.item.id
             });
           } else if(item.item.poster_path ) {
             return card({
@@ -123,4 +128,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CommonRow;
+export default inject('commonStore')(observer(CommonRow));

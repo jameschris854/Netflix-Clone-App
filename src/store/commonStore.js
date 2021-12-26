@@ -30,7 +30,13 @@ class commonStore {
 
   @observable
   downloadList = []
-  
+
+  @observable
+  actionSheetDetails = null
+
+  @observable
+  actionSheetDetailsState = false
+
   @action
   setNewList = (data) => {
       this.newList = data.data.results
@@ -110,6 +116,17 @@ class commonStore {
     await this.initHome()
   }
 
+  @action
+  setActionSheetState = (data) => {
+    this.actionSheetDetailsState = data
+  }
+
+  @action
+  setActionSheetDetails = async (data) => {
+    this.actionSheetDetails = data.data
+    this.setActionSheetState(true)
+  }
+
   getNewList = async () => {
     console.log('setNewList');
     data = await Sync.getMoviesNew();
@@ -129,6 +146,12 @@ class commonStore {
   getDownloadList = async () => {
     data = await Sync.getMoviesPopular(10);
     this.setDownloadList(data);
+  }
+
+  openDetailsSheet = async (id) => {
+    console.log(id);
+    data = await Sync.getDetails(id);
+    this.setActionSheetDetails(data)
   }
 }
 

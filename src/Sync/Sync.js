@@ -60,4 +60,19 @@ export default class Sync {
       console.error('getMoviesPopular', err);
     }
   };
+
+  static getDetails = async (id) => {
+    console.log(id);
+    let apiType = commonStore.apiType;
+
+    try{
+      const details = await axios.get(
+        `${TMDB}${apiType}/${id}?api_key=${API_KEY}&language=en-US`
+      )
+      console.log(details.data);
+      return details
+    }catch (err) {
+      console.error('details', err);
+    }
+  }
 }

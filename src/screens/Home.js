@@ -6,7 +6,7 @@ import {
   Dimensions,
   TouchableNativeFeedback,
 } from 'react-native';
-import {Image, Avatar} from 'native-base';
+import {Image, Avatar, Actionsheet, Box} from 'native-base';
 import Sync from '../Sync/Sync';
 import {rand} from '../utils/utils';
 import CommonRow from '../components/CommonRow';
@@ -23,6 +23,7 @@ import {LinearGradient, Rect, Defs, Svg, Stop} from 'react-native-svg';
 import PosterOptions from '../components/PosterOptions';
 import {inject, observer} from 'mobx-react';
 import OptionMenu from '../components/OptionMenu';
+import DetailsSheet from '../components/DetailsSheet';
 const Home = ({commonStore}) => {
   const [poster, setPoster] = useState(null);
 
@@ -117,13 +118,20 @@ const Home = ({commonStore}) => {
       }
     }
   };
-
-  console.log(commonStore.homeMode, commonStore.apiType);
-
+  let actionDetails = commonStore.actionSheetDetails
   return (
     <>
       <SafeAreaView style={{flex: 0, backgroundColor: 'black'}} />
       <SafeAreaView style={{flex: 1, backgroundColor: '#0000003b'}}>
+          <Actionsheet
+          isOpen={commonStore.actionSheetDetailsState}
+          onClose={() => (commonStore.setActionSheetState(false))}
+          hideDragIndicator={true}
+          disableOverlay={false}>
+          {actionDetails && <Actionsheet.Content backgroundColor={'#2B2B2B'}>
+            <DetailsSheet actionDetails={actionDetails} store={commonStore}/>
+          </Actionsheet.Content>}
+        </Actionsheet>
         <Animated.View
           style={[
             styles.headerContainer,
