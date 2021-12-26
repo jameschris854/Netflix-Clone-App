@@ -6,33 +6,34 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import Games from './src/screens/Games.js';
 import News from './src/screens/News.js';
 import Laughs from './src/screens/Laughs.js';
 import Downloads from './src/screens/Dowloads.js';
-import {NativeBaseProvider,StatusBar} from 'native-base';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { Provider } from 'mobx-react';
+import {NativeBaseProvider, StatusBar} from 'native-base';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import {Provider} from 'mobx-react';
 import commonStore from './src/store/commonStore.js';
-
+import OptionMenu from './src/components/OptionMenu.js';
+import { View } from 'native-base';
 const App = () => {
   const Tab = createBottomTabNavigator();
 
   const tabOptions = {
     headerShown: false,
-    tabBarInactiveBackgroundColor: '#121212',
-    tabBarActiveBackgroundColor: '#121212',
     tabBarActiveTintColor: '#ffff',
     tabBarInactiveTintColor: '#747474',
-    tabBarStyle: styles.tabBarStyle,
+    tabBarStyle: {...styles.tabBarStyle},
   };
 
   const tabData = [
     {
       name: 'Home',
       component: Home,
-      focusedIcon: ({color}) => (<MaterialCommunityIcons name="home-variant" size={30} color={color} />),
+      focusedIcon: ({color}) => (
+        <MaterialCommunityIcons name="home-variant" size={30} color={color} />
+      ),
       unFocusedIcon: ({color}) => (
         <MaterialCommunityIcons
           name="home-variant-outline"
@@ -101,32 +102,41 @@ const App = () => {
 
   return (
     <Provider commonStore={commonStore}>
-    <SafeAreaProvider >
-    <NavigationContainer>
-      <NativeBaseProvider>
-        <StatusBar  backgroundColor='#000' barStyle={'default'} animated={true} hidden={false} translucent={false}/>
-        <Tab.Navigator screenOptions={tabOptions} initialRouteName="Home">
-          {tabData.map(tab => (
-            <Tab.Screen
-              options={{
-                tabBarLabelStyle:{bottom:5},
-                tabBarLabel: tab.name,
-                tabBarIcon: ({focused, color}) =>
-                  focused ? (
-                    <tab.focusedIcon color={color} />
-                  ) : (
-                    <tab.unFocusedIcon color={color} />
-                  ),
-              }}
-              name={tab.name}
-              size={30}
-              component={tab.component}
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <NativeBaseProvider>
+            <OptionMenu />
+            <StatusBar
+              backgroundColor="#000"
+              barStyle={'default'}
+              animated={true}
+              hidden={false}
+              translucent={false}
             />
-          ))}
-        </Tab.Navigator>
-      </NativeBaseProvider>
-    </NavigationContainer>
-    </SafeAreaProvider>
+            <Tab.Navigator screenOptions={tabOptions} initialRouteName="Home">
+              {tabData.map(tab => (
+                <>
+                  <Tab.Screen
+                    options={{
+                      tabBarLabelStyle: {bottom: 5},
+                      tabBarLabel: tab.name,
+                      tabBarIcon: ({focused, color}) =>
+                        focused ? (
+                          <tab.focusedIcon color={color} />
+                        ) : (
+                          <tab.unFocusedIcon color={color} />
+                        ),
+                    }}
+                    name={tab.name}
+                    size={30}
+                    component={tab.component}
+                  />
+                </>
+                  ))}
+            </Tab.Navigator>
+          </NativeBaseProvider>
+        </NavigationContainer>
+      </SafeAreaProvider>
     </Provider>
   );
 };
@@ -135,7 +145,7 @@ const styles = StyleSheet.create({
   tabBarStyle: {
     position: 'absolute',
     height: 65,
-    paddingVertical:10,
+    paddingVertical: 10,
     borderTopColor: '#121212',
     backgroundColor: '#121212',
   },

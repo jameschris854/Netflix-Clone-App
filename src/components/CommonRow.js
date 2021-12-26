@@ -1,38 +1,110 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Image, Text} from 'native-base';
+import {ArrowBackIcon, Box, Image, Text} from 'native-base';
 import {FlatList, View, StyleSheet} from 'react-native';
-const CommonRow = ({data, title}) => {
-  console.log();
-  const card = poster => {
+import {LinearGradient, Rect, Defs, Svg, Stop} from 'react-native-svg';
+
+const CommonRow = ({data, title, type}) => {
+  useEffect(() => {
+    let isDownload = false
+
+    data.map((e)=> {
+      console.log(e.type);
+      e.type === 'download' ? isDownload = true : null
+    })
+
+    if (type === 'download' && !isDownload) {
+      data.unshift({
+        poster:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7Zrnbx9d9XDnRB2QgN2tAFQXIVQzMWevU85OE5xpq98rFu30RA4L_H5-5yDOTDN3_9wk&usqp=CAU',
+        type: 'download',
+      });
+    }
+    console.log(data);
+  }, []);
+
+  const card = ({poster, type ,id}) => {
+    const width = 260
     return (
-      <Box rounded="lg" width="120" height="150" padding="1">
-        <Image
-        borderRadius={5}
-          resizeMethod="scale"
-          resizeMode="cover"
-          key={poster}
-          source={{uri: poster}}
-          height={'100%'}
-          width={'100%'}
-          alt="cover pic"
-        />
-      </Box>
+      <>
+        {type === 'download' ? (
+          <Box rounded="lg" width={width} height="175" padding="1" marginRight="1">
+            <Svg style={{position:'absolute',top:0,zIndex:1}} height="175" width={width}>
+                  <Defs>
+                    <LinearGradient id="grad" x1="1" y1="0" x2="0" y2="1">
+                      <Stop
+                        offset="0"
+                        stopColor="rgb(0,0,0,0.9)"
+                        stopOpacity="0"
+                      />
+                      <Stop
+                        offset="0.99"
+                        stopColor="#696969"
+                        stopOpacity="0.9"
+                      />
+                    </LinearGradient>
+                  </Defs>
+                  <Rect
+                    width={width}
+                    height={175}
+                    fill="url(#grad)"
+                  />
+                </Svg>
+                <View style={{position:'absolute',height:175,width:width,top:0,display:'flex',zIndex:2}}>
+                  <ArrowBackIcon style={{marginLeft:'auto',marginRight:10,transform:([{rotateY:'180deg'}]),width:20}}  color='#ffff'/>
+                  <Text style={{color:'#ffff',fontWeight:'bold',fontSize:20,marginTop:'20%',marginLeft:10}}>Watch on the go</Text>
+                  <Text style={{color:'#7e7e7e',marginLeft:10}}>Tap to setup <Text style={{color:'#ffff'}}>Downloads for you</Text> and enjoy recommended  movies and shows offline</Text>
+                </View>
+            <Image
+              backgroundColor={'rgb(72,72,72)'}
+              borderRadius={5}
+              resizeMethod="scale"
+              resizeMode="cover"
+              key={300}
+              source={{uri: poster}}
+              height={'100%'}
+              width={'100%'}
+              alt="cover pic"
+            />
+          </Box>
+        ) : (
+          <Box rounded="lg" width="130" height="175" padding="1">
+            <Image
+              backgroundColor={'rgb(72,72,72)'}
+              borderRadius={5}
+              resizeMethod="scale"
+              resizeMode="cover"
+              key={id}
+              source={{uri: poster}}
+              height={'100%'}
+              width={'100%'}
+              alt="cover pic"
+            />
+          </Box>
+        )}
+      </>
     );
   };
 
   return (
     <>
       <Text style={[styles.Header]}>{title}</Text>
-      <FlatList
+    <FlatList
         horizontal={true}
         data={data}
-        renderItem={item => {
-          if (item.item.poster_path) {
-            return card(
-              `https://image.tmdb.org/t/p/w500${item.item.poster_path}`,
-            );
-          } else {
-            return null;
+        renderItem={(item,i) => {
+          if(item.item.type === 'download'){
+            return card({
+              poster: item.item.poster,
+              type: item.item.type,
+            });
+          } else if(item.item.poster_path ) {
+            return card({
+              poster: `https://image.tmdb.org/t/p/w500${item.item.poster_path}`,
+              type: 'common',
+              key: item.item.id
+            });
+          }else{
+            return
           }
         }}
         keyExtractor={item => item.id}
@@ -43,10 +115,11 @@ const CommonRow = ({data, title}) => {
 
 const styles = StyleSheet.create({
   Header: {
-    fontSize: 20,
+    fontSize: 21,
     color: '#ffff',
-    fontWeight: 'bold',
-    marginVertical:10
+    fontWeight: '600',
+    marginTop: 25,
+    marginLeft:5
   },
 });
 

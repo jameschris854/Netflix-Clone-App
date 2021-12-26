@@ -5,6 +5,7 @@ import {
   InfoIcon,
   Circle,
   CircleIcon,
+  InfoOutlineIcon,
 } from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
@@ -187,9 +188,9 @@ const PosterOptions = ({details}) => {
                 _text={{
                   textAlign: 'center',
                 }}>
-                <InfoIcon size="6" color={'#FFFF'} />
+                <InfoOutlineIcon size="6" color={'#FFFF'} />
               </Box>
-              <Text textAlign="center" style={{color: '#ffff', fontSize: 10}}>
+              <Text textAlign="center" style={{color: '#ffff', fontSize: 10,marginTop:5}}>
                 My List
               </Text>
             </View>

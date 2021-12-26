@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Dimensions, Button} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  TouchableNativeFeedback,
+} from 'react-native';
 import {Image, Avatar} from 'native-base';
 import Sync from '../Sync/Sync';
 import {rand} from '../utils/utils';
@@ -16,13 +22,15 @@ import {SafeAreaView} from 'react-native';
 import {LinearGradient, Rect, Defs, Svg, Stop} from 'react-native-svg';
 import PosterOptions from '../components/PosterOptions';
 import {inject, observer} from 'mobx-react';
+import OptionMenu from '../components/OptionMenu';
 const Home = ({commonStore}) => {
   const [poster, setPoster] = useState(null);
+
   const scrollOffset = useSharedValue(0);
   useEffect(() => {
     const posterInterval = async () => {
       try {
-        setPoster(commonStore.newList[rand(20)]);
+        setPoster(commonStore.newList[rand(18)]);
       } catch (e) {
         console.error(e);
       }
@@ -40,7 +48,7 @@ const Home = ({commonStore}) => {
     console.log('init----------');
     try {
       await commonStore.initHome();
-      setPoster(commonStore.newList[rand(20)]);
+      setPoster(commonStore.newList[rand(18)]);
     } catch (e) {
       console.error('init', e);
     }
@@ -68,7 +76,50 @@ const Home = ({commonStore}) => {
   });
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
-  console.log(poster);
+  const headerMenus = [{name: 'Categories', option: true}];
+  if (commonStore.homeMode === 'home') {
+    headerMenus.unshift({name: 'Movies', option: false});
+    headerMenus.unshift({name: 'TV Shows', option: false});
+  } else if (commonStore.homeMode === 'tv') {
+    headerMenus.unshift({name: 'TV Shows', option: true});
+  } else {
+    headerMenus.unshift({name: 'Movies', option: true});
+  }
+
+  const handleMenuClick = (data, store) => {
+    console.log(data, 'here');
+    if (data.option) {
+      if (data.name === 'Movies') {
+        store.setOptionList([
+          {name: 'Home', click: 'home', isActive: false},
+          {name: 'TV Shows', click: 'tv', isActive: false},
+          {name: 'Movies', click: 'movies', isActive: true},
+        ]);
+      } else if (data.name === 'TV Shows') {
+        store.setOptionList([
+          {name: 'Home', click: 'home', isActive: false},
+          {name: 'TV Shows', click: 'tv', isActive: true},
+          {name: 'Movies', click: 'movies', isActive: false},
+        ]);
+      } else {
+        store.setOptionList([
+          {name: 'cat', click: 'home', isActive: false},
+          {name: 'cat', click: 'tv', isActive: true},
+          {name: 'cat', click: 'movies', isActive: false},
+        ]);
+      }
+      store.showOption();
+    } else {
+      if (data.name === 'Movies') {
+        commonStore.setHomeMode('movies');
+      } else if (data.name === 'TV Shows') {
+        commonStore.setHomeMode('tv');
+      }
+    }
+  };
+
+  console.log(commonStore.homeMode, commonStore.apiType);
+
   return (
     <>
       <SafeAreaView style={{flex: 0, backgroundColor: 'black'}} />
@@ -120,20 +171,40 @@ const Home = ({commonStore}) => {
               justifyContent: 'center',
               alignItems: 'center',
               height: 50,
+              borderRadius: 0,
+              // backgroundColor: 'black',
             }}>
-            <Text style={styles.subHeaderStyle}>TV Shows</Text>
-            <Text style={styles.subHeaderStyle}>Movies</Text>
-            <Text style={styles.subHeaderStyle}>
-              Categories{' '}
-              <MaterialCommunityIcons
-                name="menu-down"
-                size={20}
-                style={{textAlignVertical: 'center'}}
-              />
-            </Text>
+            {headerMenus.map(e => {
+              console.log(e);
+              return (
+                <TouchableNativeFeedback
+                  useForeground={true}
+                  onPress={() => handleMenuClick(e, commonStore)}
+                  background={TouchableNativeFeedback.Ripple(
+                    '#ffff',
+                    true,
+                    50,
+                  )}>
+                  <View style={{padding: 1}}>
+                    <Text style={styles.subHeaderStyle}>
+                      {e.name}
+                      {e.option && (
+                        <MaterialCommunityIcons
+                          name="menu-down"
+                          size={20}
+                          style={{textAlignVertical: 'center'}}
+                        />
+                      )}
+                    </Text>
+                  </View>
+                </TouchableNativeFeedback>
+              );
+            })}
           </View>
         </Animated.View>
-        {(poster && commonStore.newList?.length && commonStore.popularList?.length) ? (
+        {poster &&
+        commonStore.newList?.length &&
+        commonStore.popularList?.length ? (
           <Animated.ScrollView
             style={{
               backgroundColor: '#000',
@@ -144,7 +215,7 @@ const Home = ({commonStore}) => {
               justifyContent: 'flex-start',
             }}
             onScroll={scrollHandler}>
-            <View style={{width: '100%', height: screenHeight - 250}}>
+            <View style={{width: '100%', height: screenHeight - 300}}>
               <Image
                 key={poster.id}
                 // source={{uri: `https://image.tmdb.org/t/p/w500/9xaAT3V3I9xxqnNiEjCivNFfdlh.jpg`}}
@@ -190,7 +261,17 @@ const Home = ({commonStore}) => {
             </View>
             <PosterOptions details={poster} />
             <CommonRow data={commonStore.newList} title={'New This Week'} />
-            <CommonRow data={commonStore.popularList} title={'Popular on Netflix'} />
+            <CommonRow
+              data={commonStore.popularList}
+              title={'Popular on Netflix'}
+            />
+            <CommonRow data={commonStore.trendingList} title={'Trending Now'} />
+            <CommonRow
+              data={commonStore.downloadList}
+              title={'Downloads For You'}
+              type={'download'}
+            />
+            <View style={{width: '100%', height: 100}} />
             <Text onPress={() => init()} key={2} style={{color: '#ffff'}}>
               Home
             </Text>
