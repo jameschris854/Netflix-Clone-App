@@ -69,8 +69,11 @@ const App = () => {
 const styles = StyleSheet.create({
   tabBarStyle: {
     position: 'absolute',
-    height: 65,
-    paddingVertical: 10,
+    justifyContent:'center',
+    alignItems:'center',
+    paddingBottom:10,
+    paddingTop:0,
+    height:65,
     borderTopColor: '#121212',
     backgroundColor: '#121212',
   },
