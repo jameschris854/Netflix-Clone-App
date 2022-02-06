@@ -40,7 +40,7 @@ const Home = ({commonStore,navigation}) => {
     };
     (async () => {
       await init();
-      setInterval(posterInterval, 4000);
+      setInterval(posterInterval, 60000);
       SplashScreen.hide();
     })();
     return () => {
