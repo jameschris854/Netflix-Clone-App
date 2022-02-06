@@ -1,16 +1,15 @@
 import React from 'react';
 import {StyleSheet, Text, FlatList, View, Dimensions} from 'react-native';
-import {AddIcon, Center, Fab} from 'native-base';
+import {AddIcon, Center } from 'native-base';
 import {inject, observer} from 'mobx-react';
 
 const OptionMenu = ({commonStore}) => {
   const menu = commonStore.optionList;
-  console.log(menu);
   return (
-    <View
+    <>
+    {commonStore.optionState && <View
       style={{
         position: 'absolute',
-        display: `${commonStore.optionState ? 'flex' : 'none'}`,
         top: 0,
         width: '105%',
         height: Dimensions.get('window').height,
@@ -30,8 +29,10 @@ const OptionMenu = ({commonStore}) => {
         data={menu}
         renderItem={(e, i) => (
           <Text
-            onPress={() => {commonStore.setHomeMode(e.item.click)
-            commonStore.hideOption()}}
+            onPress={() => {
+              commonStore.setHomeMode(e.item.click);
+              commonStore.hideOption();
+            }}
             style={[
               {color: '#ffff', marginVertical: 10},
               e.item.isActive
@@ -76,7 +77,8 @@ const OptionMenu = ({commonStore}) => {
         </Text>
       </View>
       {/* </View> */}
-    </View>
+    </View>}
+    </>
   );
 };
 

@@ -24,6 +24,8 @@ import PosterOptions from '../components/PosterOptions';
 import {inject, observer} from 'mobx-react';
 import OptionMenu from '../components/OptionMenu';
 import DetailsSheet from '../components/DetailsSheet';
+import SplashScreen from 'react-native-splash-screen'
+
 const Home = ({commonStore,navigation}) => {
   const [poster, setPoster] = useState(null);
 
@@ -39,6 +41,7 @@ const Home = ({commonStore,navigation}) => {
     (async () => {
       await init();
       setInterval(posterInterval, 4000);
+      SplashScreen.hide();
     })();
     return () => {
       clearInterval(posterInterval);
