@@ -3,11 +3,13 @@ import {Box, Column, Image, Text, View} from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Pressable, Touchable, TouchableOpacity} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const DetailsSheet = ({actionDetails,store}) => {
+const DetailsSheet = ({actionDetails, store}) => {
+  const navigation = useNavigation();
   let runtime = actionDetails.runtime;
   return (
-    <Box w="100%" justifyContent="space-between" height={220}  >
+    <Box w="100%" justifyContent="space-between" height={270}>
       <View style={{flexDirection: 'row', width: '100%'}}>
         <Image
           backgroundColor={'rgb(72,72,72)'}
@@ -15,48 +17,68 @@ const DetailsSheet = ({actionDetails,store}) => {
           resizeMethod="scale"
           resizeMode="cover"
           key={300}
-          source={{
-            uri: `https://image.tmdb.org/t/p/w500${actionDetails.poster_path}`,
-          }}
-          height={120}
-          width={'20%'}
+          source={{uri: `https://image.tmdb.org/t/p/w500${actionDetails.poster_path}`}}
+          height={150}
+          width={'25%'}
           alt="cover pic"
         />
-        <View style={{flexDirection: 'column',marginLeft:'3%'}}>
-          <View style={{flexDirection: 'row',justifyContent:'space-between',width:"82%"}}>
+        <View style={{flexDirection: 'column', marginLeft: '3%'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: '82%',
+            }}>
             <View>
               <View style={{flexDirection: 'row'}}>
-                <Text style={{color: 'white',fontWeight:'bold',fontSize:17}}>{actionDetails.title?.toUpperCase()}</Text>
+                <Text
+                  tail
+                  numberOfLines={1}
+                  style={{color: 'white', fontWeight: '900', fontSize: 17}}>
+                  {actionDetails?.[
+                    store.apiType !== 'tv' ? 'title' : 'name'
+                  ].toUpperCase()}
+                </Text>
               </View>
               <View style={{flexDirection: 'row'}}>
                 <Text style={{color: '#848484'}}>
-                  {actionDetails?.release_date?.split('-')[0]}{"   "}
+                  {
+                    actionDetails?.[
+                      store.apiType !== 'tv' ? 'release_date' : 'first_air_date'
+                    ]?.split('-')[0]
+                  }
+                  {'   '}
                 </Text>
                 <Text style={{color: '#848484'}}>
-                  {actionDetails.adult ? '18+' : '13+'}{"  "}
+                  {actionDetails.adult ? '18+' : '13+'}
+                  {'  '}
                 </Text>
-                <Text style={{color: '#848484'}}>{`${Math.floor(
-                  runtime / 60,
-                )}h ${Math.floor(
-                  (runtime / 60 - Math.floor(runtime / 60)) * 100,
-                )}m`}</Text>
+                <Text style={{color: '#848484'}}>
+                  {store.apiType !== 'tv'
+                    ? `${Math.floor(runtime / 60)}h ${Math.floor(
+                        (runtime / 60 - Math.floor(runtime / 60)) * 100,
+                      )}m`
+                    : `${actionDetails.number_of_seasons} Season`}
+                </Text>
               </View>
             </View>
-            <Pressable onPress={() => store.setActionSheetState(false)}>
+            <Pressable
+              onPress={() => store.setActionSheetState(false)}
+              style={{position: 'absolute', right: -10, top: 0}}>
               <MaterialCommunityIcons
                 name="close"
-                size={23}
+                size={25}
                 color="#ffff"
                 style={{
                   backgroundColor: '#848484',
-                  height: 23,
+                  height: 25,
                   borderRadius: 50,
                 }}
               />
             </Pressable>
           </View>
-          <View style={{width: '80%'}}>
-            <Text tail numberOfLines={3} style={{color: '#ffff'}}>
+          <View style={{width: '87%'}}>
+            <Text tail numberOfLines={4} style={{color: '#ffff'}}>
               {actionDetails.overview}
             </Text>
           </View>
@@ -77,10 +99,10 @@ const DetailsSheet = ({actionDetails,store}) => {
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
-            height: 30,
+            height: 35,
           }}>
           <Entypo name="controller-play" size={25} color="#000" />
-          <Text style={{fontWeight: 'bold'}}>Play</Text>
+          <Text style={{fontWeight: '900'}}>Play</Text>
         </TouchableOpacity>
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <MaterialCommunityIcons name="download" size={25} color="#ffff" />
@@ -102,11 +124,14 @@ const DetailsSheet = ({actionDetails,store}) => {
           borderTopWidth: 1,
           justifyContent: 'flex-start',
           alignItems: 'center',
-          paddingVertical:10
-        }}>
+          paddingVertical: 10,
+          width:'100%'
+        }}
+        onPress={() => navigation.navigate('DetailsScreen',{actionDetails}) }
+        >
         <MaterialCommunityIcons
           name="information-outline"
-          size={20}
+          size={25}
           color="#ffff"
         />
         <Text style={{color: 'white', marginLeft: 10}}>Details & More</Text>

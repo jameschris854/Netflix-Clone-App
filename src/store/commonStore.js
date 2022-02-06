@@ -149,9 +149,13 @@ class commonStore {
   }
 
   openDetailsSheet = async (id) => {
-    console.log(id);
     data = await Sync.getDetails(id);
     this.setActionSheetDetails(data)
+  }
+
+  getCredits = async (id) => {
+    data = await Sync.getCredits(id)
+    return data?.data
   }
 }
 

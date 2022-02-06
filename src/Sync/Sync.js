@@ -75,4 +75,18 @@ export default class Sync {
       console.error('details', err);
     }
   }
+
+  static getCredits = async (id) => {
+    let apiType = commonStore.apiType;
+
+    try{
+      const credits = await axios.get(
+        `${TMDB}${apiType}/${id}/credits?api_key=${API_KEY}&language=en-US`
+      )
+      return credits
+    }catch (err) {
+      console.error('details', err);
+    }
+
+  }
 }

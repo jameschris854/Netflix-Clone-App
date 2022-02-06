@@ -24,7 +24,7 @@ import PosterOptions from '../components/PosterOptions';
 import {inject, observer} from 'mobx-react';
 import OptionMenu from '../components/OptionMenu';
 import DetailsSheet from '../components/DetailsSheet';
-const Home = ({commonStore}) => {
+const Home = ({commonStore,navigation}) => {
   const [poster, setPoster] = useState(null);
 
   const scrollOffset = useSharedValue(0);
@@ -129,7 +129,7 @@ const Home = ({commonStore}) => {
           hideDragIndicator={true}
           disableOverlay={false}>
           {actionDetails && <Actionsheet.Content backgroundColor={'#2B2B2B'}>
-            <DetailsSheet actionDetails={actionDetails} store={commonStore}/>
+            <DetailsSheet actionDetails={actionDetails} store={commonStore} navigation={navigation}/>
           </Actionsheet.Content>}
         </Actionsheet>
         <Animated.View
