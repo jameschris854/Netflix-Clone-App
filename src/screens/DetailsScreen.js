@@ -1,16 +1,17 @@
-import {View, Text, Image, Button} from 'native-base';
-import {TouchableOpacity} from 'react-native';
+import {View, Text, Image, Button, Box, AddIcon} from 'native-base';
+import {TouchableOpacity, StyleSheet} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import React, {useEffect, useState} from 'react';
 import {observer, inject} from 'mobx-react';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 const DetailsScreen = ({commonStore, route}) => {
   const [actionDetails, setActionDetails] = useState(null);
   const [cast, setCast] = useState(null);
-  const [crew,setCrew] = useState(null)
+  const [crew, setCrew] = useState(null);
   let castStr = '';
-  let director = ''
+  let director = '';
 
   useEffect(() => {
     (async () => {
@@ -32,10 +33,10 @@ const DetailsScreen = ({commonStore, route}) => {
 
   crew?.map(res => {
     console.log(res);
-    res.job === 'Director' ? director = res.name : null
-  })
+    res.job === 'Director' ? (director = res.name) : null;
+  });
 
-  console.log(castStr,director);
+  console.log(castStr, director);
   return (
     <View
       style={{
@@ -64,110 +65,161 @@ const DetailsScreen = ({commonStore, route}) => {
               height={'100%'}
             />
           </View>
-          <Text
-            style={{
-              alignSelf: 'flex-start',
-              color: '#ffffff',
-              fontSize: 25,
-              fontWeight: 'bold',
-              marginTop: 10,
-              lineHeight: 28,
-            }}>
-            {actionDetails.original_title}
-          </Text>
-          <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-            <Text style={{color: '#8E8E8E'}}>
-              {
-                actionDetails?.[
-                  'movie' !== 'tv' ? 'release_date' : 'first_air_date'
-                ]?.split('-')[0]
-              }
-              {'   '}
-            </Text>
+          <View style={{paddingHorizontal: 7, width: '100%'}}>
             <Text
               style={{
-                color: '#8E8E8E',
-                backgroundColor: '#363636',
-                borderRadius: 4,
-                paddingHorizontal: 8,
-                justifyContent: 'center',
-                alignSelf: 'center',
-                transform: [{scaleY: 0.8}],
+                alignSelf: 'flex-start',
+                color: '#ffffff',
+                fontSize: 25,
+                fontWeight: 'bold',
+                marginTop: 10,
+                lineHeight: 28,
               }}>
-              {actionDetails.adult ? '18+' : '13+'}
+              {actionDetails.original_title}
             </Text>
-            <Text style={{color: '#8E8E8E', marginLeft: 5}}>
-              {'movie' !== 'tv'
-                ? `${Math.floor(runtime / 60)}h ${Math.floor(
-                    (runtime / 60 - Math.floor(runtime / 60)) * 100,
-                  )}m`
-                : `${actionDetails.number_of_seasons} Season`}
+            <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+              <Text style={{color: '#8E8E8E'}}>
+                {
+                  actionDetails?.[
+                    'movie' !== 'tv' ? 'release_date' : 'first_air_date'
+                  ]?.split('-')[0]
+                }
+                {'   '}
+              </Text>
+              <Text
+                style={{
+                  color: '#8E8E8E',
+                  backgroundColor: '#363636',
+                  borderRadius: 4,
+                  paddingHorizontal: 8,
+                  justifyContent: 'center',
+                  alignSelf: 'center',
+                  transform: [{scaleY: 0.8}],
+                }}>
+                {actionDetails.adult ? '18+' : '13+'}
+              </Text>
+              <Text style={{color: '#8E8E8E', marginLeft: 5}}>
+                {'movie' !== 'tv'
+                  ? `${Math.floor(runtime / 60)}h ${Math.floor(
+                      (runtime / 60 - Math.floor(runtime / 60)) * 100,
+                    )}m`
+                  : `${actionDetails.number_of_seasons} Season`}
+              </Text>
+            </View>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={{
+                backgroundColor: 'white',
+                width: '100%',
+                borderRadius: 4,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignSelf: 'flex-start',
+                marginTop: 10,
+                height: 50,
+              }}>
+              <>
+                <Entypo name="controller-play" size={25} color="#000" />
+                <Text style={{fontWeight: 'bold', fontSize: 15}}>Play</Text>
+              </>
+            </TouchableOpacity>
+            <Button
+              width={'100%'}
+              background={'#262626'}
+              borderRadius={4}
+              marginTop={3}
+              alignSelf={'flex-start'}
+              height={50}
+              leftIcon={
+                <MaterialCommunityIcons
+                  name="download"
+                  size={25}
+                  color="#ffffff"
+                />
+              }
+              style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Text
+                style={{color: '#ffffff', fontSize: 15, fontWeight: 'bold'}}>
+                Download
+              </Text>
+            </Button>
+            <Text
+              width={'100%'}
+              noOfLines={3}
+              alignSelf={'flex-start'}
+              color={'#ffffff'}
+              marginTop={2}>
+              {actionDetails.overview}
             </Text>
+            <View
+              style={{flexDirection: 'row', marginTop: 8}}
+              alignSelf={'flex-start'}>
+              <Text noOfLines={1} color={'#AAAAAA'} width={'80%'}>
+                <Text>
+                  <Text style={{fontWeight: 'bold'}}>Starring:</Text>
+                  {` ${castStr}`}
+                </Text>
+              </Text>
+              <Text color={'#ffffff'}>more</Text>
+            </View>
+            <Text alignSelf={'flex-start'} color={'#AAAAAA'}>
+              <Text style={{fontWeight: 'bold'}}>Director:</Text> {director}
+            </Text>
+            <View>
+              <View
+                style={[
+                  {display: 'flex', flexDirection: 'row', marginTop: 15,width:"80%"},
+                  {justifyContent: 'space-around', alignItems: 'center'},
+                ]}>
+                <View style={[styles.center]}>
+                  <Box
+                    _text={{
+                      textAlign: 'center',
+                    }}>
+                    <AddIcon size="5" color={'#FFFF'} />
+                  </Box>
+                  <Text style={styles.iconTextStyle} textAlign="center">
+                    My List
+                  </Text>
+                </View>
+                <View style={[styles.center]}>
+                  <Box
+                    _text={{
+                      textAlign: 'center',
+                    }}>
+                    <SimpleLineIcons name="like" size={23} color="#ffffff" />
+                  </Box>
+                  <Text style={styles.iconTextStyle} textAlign="center">
+                    Rate
+                  </Text>
+                </View>
+                <View style={[styles.center]}>
+                  <Box
+                    _text={{
+                      textAlign: 'center',
+                    }}>
+                    <Entypo name="share" size={23} color={'#FFFF'} />
+                  </Box>
+                  <Text textAlign="center" style={styles.iconTextStyle}>
+                    Share
+                  </Text>
+                </View>
+              </View>
+            </View>
           </View>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={{
-              backgroundColor: 'white',
-              width: '97%',
-              borderRadius: 4,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              alignSelf: 'flex-start',
-              marginTop: 10,
-              height: 35,
-            }}>
-            <>
-              <Entypo name="controller-play" size={25} color="#000" />
-              <Text style={{fontWeight: '900'}}>Play</Text>
-            </>
-          </TouchableOpacity>
-          <Button
-            width={'97%'}
-            background={'#262626'}
-            borderRadius={4}
-            marginTop={3}
-            alignSelf={'flex-start'}
-            leftIcon={
-              <MaterialCommunityIcons
-                name="download"
-                size={25}
-                color="#ffffff"
-              />
-            }
-            style={{justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={{color: '#ffffff', fontSize: 12, fontWeight: 'bold'}}>
-              Download
-            </Text>
-          </Button>
-          <Text
-            noOfLines={3}
-            alignSelf={'flex-start'}
-            color={'#ffffff'}
-            marginTop={2}>
-            {actionDetails.overview}
-          </Text>
-          <View
-            style={{flexDirection: 'row', marginTop: 8}}
-            alignSelf={'flex-start'}>
-            <Text noOfLines={1} color={'#AAAAAA'} width={'80%'}>
-              <Text>{`Starring: ${castStr}`}</Text>
-            </Text>
-            <Text color={'#ffffff'}>more</Text>
-          </View>
-          <Text alignSelf={'flex-start'} color={'#AAAAAA'}>Director: {director}</Text>
 
           {/* 
       <View>
-        
-        
-        
+      
+      
+      
       </View>
       <View>
-        <TouchableOpacity
-          style={{
-            backgroundColor: 'white',
-            width: '50%',
+      <TouchableOpacity
+      style={{
+        backgroundColor: 'white',
+        width: '50%',
             borderRadius: 3,
             flexDirection: 'row',
             justifyContent: 'center',
@@ -190,5 +242,20 @@ const DetailsScreen = ({commonStore, route}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  iconTextStyle: {
+    color: '#757575',
+    fontWeight:'bold',
+    fontSize: 10,
+    marginTop: 5,
+  },
+});
 
 export default inject('commonStore')(observer(DetailsScreen));
