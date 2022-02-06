@@ -2,12 +2,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 //components
-import Home from './src/screens/Home.js';
-import Games from './src/screens/Games.js';
-import News from './src/screens/News.js';
-import Laughs from './src/screens/Laughs.js';
-import Downloads from './src/screens/Dowloads.js';
-import DetailsScreen from './src/screens/DetailsScreen';
+
 import {StyleSheet} from 'react-native';
 import {NativeBaseProvider, StatusBar} from 'native-base';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -16,13 +11,8 @@ import OptionMenu from './src/components/OptionMenu.js';
 //store
 import {Provider} from 'mobx-react';
 import commonStore from './src/store/commonStore.js';
-//icons
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { HomeStackNavigator } from './src/Navigators/StackNavigator.js';
-
+//footer
+import tabData from './src/utils/footer'
 
 const App = () => {
   const Tab = createBottomTabNavigator();
@@ -34,78 +24,6 @@ const App = () => {
     tabBarStyle: {...styles.tabBarStyle},
   };
 
-  const tabData = [
-    {
-      name: 'Home',
-      component: HomeStackNavigator,
-      focusedIcon: ({color}) => (
-        <MaterialCommunityIcons name="home-variant" size={30} color={color} />
-      ),
-      unFocusedIcon: ({color}) => (
-        <MaterialCommunityIcons
-          name="home-variant-outline"
-          size={30}
-          color={color}
-        />
-      ),
-    },
-    {
-      name: 'Games',
-      component: Games,
-      focusedIcon: ({color}) => (
-        <Ionicons name="game-controller" size={30} color={color} />
-      ),
-      unFocusedIcon: ({color}) => (
-        <Ionicons name="game-controller-outline" size={30} color={color} />
-      ),
-    },
-    {
-      name: 'News',
-      component: News,
-      focusedIcon: ({color}) => (
-        <MaterialCommunityIcons
-          name="play-box-multiple"
-          size={30}
-          color={color}
-        />
-      ),
-      unFocusedIcon: ({color}) => (
-        <MaterialCommunityIcons
-          name="play-box-multiple-outline"
-          size={30}
-          color={color}
-        />
-      ),
-    },
-    {
-      name: 'Laughs',
-      component: Laughs,
-      focusedIcon: ({color}) => (
-        <FontAwesome5 name="smile" size={30} color={color} />
-      ),
-      unFocusedIcon: ({color}) => (
-        <FontAwesome name="smile-o" size={30} color={color} />
-      ),
-    },
-    {
-      name: 'Downloads',
-      component: Downloads,
-      focusedIcon: ({color}) => (
-        <MaterialCommunityIcons
-          name="arrow-down-circle"
-          size={30}
-          color={color}
-        />
-      ),
-      unFocusedIcon: ({color}) => (
-        <MaterialCommunityIcons
-          name="arrow-down-circle-outline"
-          size={30}
-          color={color}
-        />
-      ),
-    },
-  ];
 
   return (
     <Provider commonStore={commonStore}>
@@ -125,8 +43,8 @@ const App = () => {
                 <>
                   <Tab.Screen
                     options={{
-                      tabBarLabelStyle: {bottom: 5},
                       tabBarLabel: tab.name,
+                      tabBarLabelStyle: {fontSize:9,bottom:7},
                       tabBarIcon: ({focused, color}) =>
                         focused ? (
                           <tab.focusedIcon color={color} />
