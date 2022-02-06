@@ -1,15 +1,17 @@
-import {View, Text, Image, Button, Box, AddIcon} from 'native-base';
+import {View, Text, Image, Button, Box, AddIcon, ScrollView} from 'native-base';
 import {TouchableOpacity, StyleSheet} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import React, {useEffect, useState} from 'react';
 import {observer, inject} from 'mobx-react';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import SegmentTab from '../components/SegmentTab';
 
 const DetailsScreen = ({commonStore, route}) => {
   const [actionDetails, setActionDetails] = useState(null);
   const [cast, setCast] = useState(null);
   const [crew, setCrew] = useState(null);
+
   let castStr = '';
   let director = '';
 
@@ -36,7 +38,20 @@ const DetailsScreen = ({commonStore, route}) => {
     res.job === 'Director' ? (director = res.name) : null;
   });
 
-  console.log(castStr, director);
+  // console.log(castStr, director);
+
+  const Tab1 = () => {
+    return (
+      <View style={[{width: '100%', height: 200, backgroundColor: 'red'}]} />
+    );
+  };
+
+  const Tab2 = () => {
+    return (
+      <View style={{width: '100%', height: 200, backgroundColor: 'blue'}} />
+    );
+  };
+
   return (
     <View
       style={{
@@ -65,7 +80,7 @@ const DetailsScreen = ({commonStore, route}) => {
               height={'100%'}
             />
           </View>
-          <View style={{paddingHorizontal: 7, width: '100%'}}>
+          <ScrollView style={{paddingHorizontal: 7, width: '100%'}}>
             <Text
               style={{
                 alignSelf: 'flex-start',
@@ -169,7 +184,12 @@ const DetailsScreen = ({commonStore, route}) => {
             <View>
               <View
                 style={[
-                  {display: 'flex', flexDirection: 'row', marginTop: 15,width:"80%"},
+                  {
+                    display: 'flex',
+                    flexDirection: 'row',
+                    marginTop: 15,
+                    width: '80%',
+                  },
                   {justifyContent: 'space-around', alignItems: 'center'},
                 ]}>
                 <View style={[styles.center]}>
@@ -207,7 +227,16 @@ const DetailsScreen = ({commonStore, route}) => {
                 </View>
               </View>
             </View>
-          </View>
+            <View style={{width: '100%'}}>
+              <SegmentTab
+                tab1={{name: 'MORE LIKE THIS', component: Tab1}}
+                tab2={{name: 'TRAILERS & MORE', component: Tab2}}
+                tabWidth={80}
+                speed={300}
+                delay={100}
+              />
+            </View>
+          </ScrollView>
 
           {/* 
       <View>
@@ -252,7 +281,7 @@ const styles = StyleSheet.create({
   },
   iconTextStyle: {
     color: '#757575',
-    fontWeight:'bold',
+    fontWeight: 'bold',
     fontSize: 10,
     marginTop: 5,
   },
