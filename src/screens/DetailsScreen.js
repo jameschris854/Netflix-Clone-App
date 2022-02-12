@@ -61,10 +61,10 @@ const DetailsScreen = ({commonStore, route}) => {
       <View style={{width: '100%', marginBottom: 80}}>
         <SimpleGrid columns={3} spacingY={1} spacingX={1}>
           {similarMovies.map(data => {
-            console.log(data);
+            let poster = `https://image.tmdb.org/t/p/w500${data.poster_path}`
             return (
               <View>
-                <CommonCard data={data} key={data.id} />
+                <CommonCard data={data} poster={poster} key={data.id} id={data.id} />
               </View>
             );
           })}
@@ -95,7 +95,7 @@ const DetailsScreen = ({commonStore, route}) => {
                 alignItems={'center'}>
                 <Avatar
                   source={{
-                    uri: `${data.author_details.avatar_path.substring(1)}`,
+                    uri: `${data?.author_details?.avatar_path ? data.author_details.avatar_path.substring(1) : 'https://i.pinimg.com/originals/e3/94/30/e39430434d2b8207188f880ac66c6411.png'}`,
                   }}
                 />
               </View>

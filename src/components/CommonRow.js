@@ -3,6 +3,7 @@ import {Actionsheet, ArrowBackIcon, Box, Image, Text} from 'native-base';
 import {FlatList, View, StyleSheet, Pressable} from 'react-native';
 import {LinearGradient, Rect, Defs, Svg, Stop} from 'react-native-svg';
 import {inject,observer} from 'mobx-react'
+import CommonCard from '../components/CommonCard'
 
 const CommonRow = ({data, title, type,commonStore}) => {
   useEffect(() => {
@@ -70,19 +71,7 @@ const CommonRow = ({data, title, type,commonStore}) => {
             />
           </Box>
         ) : (
-          <Box rounded="lg" width="130" height="175" padding="1">
-            <Image
-              backgroundColor={'rgb(72,72,72)'}
-              borderRadius={5}
-              resizeMethod="scale"
-              resizeMode="cover"
-              key={key}
-              source={{uri: poster}}
-              height={'100%'}
-              width={'100%'}
-              alt="cover pic"
-            />
-          </Box>
+          <CommonCard data={{poster_path:poster}} poster={poster} id={key} key={key} />
         )}
       </Pressable>
       </>
