@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Dimensions,
   TouchableNativeFeedback,
+  StatusBar,
 } from 'react-native';
 import {Image, Avatar, Actionsheet, Box} from 'native-base';
 import Sync from '../Sync/Sync';
@@ -303,8 +304,9 @@ const styles = StyleSheet.create({
     height: 100,
     backgroundColor: '#0000003b',
     paddingRight: 10,
-    paddingVertical: 3,
+    paddingBottom: 3,
     zIndex: 100,
+    marginTop:StatusBar.currentHeight
   },
   avatar: {
     borderRadius: 5,

@@ -1,30 +1,46 @@
-import {View, Text, Image, Button, Box, AddIcon, ScrollView} from 'native-base';
+import {
+  View,
+  Text,
+  Image,
+  Button,
+  Box,
+  AddIcon,
+  ScrollView,
+  SimpleGrid,
+  Avatar,
+} from 'native-base';
 import {TouchableOpacity, StyleSheet} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import React, {useEffect, useState} from 'react';
 import {observer, inject} from 'mobx-react';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import SegmentTab from '../components/SegmentTab';
+import CommonCard from '../components/CommonCard';
+import {timeSince} from '../utils/utils';
 
 const DetailsScreen = ({commonStore, route}) => {
   const [actionDetails, setActionDetails] = useState(null);
   const [cast, setCast] = useState(null);
   const [crew, setCrew] = useState(null);
+  const [similarMovies, setSimilarMovies] = useState([]);
+  const [getReviews, setReviews] = useState([]);
 
   let castStr = '';
   let director = '';
 
   useEffect(() => {
     (async () => {
-      console.log(JSON.stringify(route.params.actionDetails.id));
       let data = await route.params.actionDetails;
       setActionDetails(data);
-
       let cast = await commonStore.getCredits(data.id);
       setCast(cast.cast);
       setCrew(cast.crew);
-      console.error(JSON.stringify(cast.cast));
+      let similarMovies = await commonStore.getSimilar(data.id);
+      setSimilarMovies(similarMovies);
+      let getReviews = await commonStore.getReviews(data.id);
+      setReviews(getReviews);
     })();
   }, []);
 
@@ -42,13 +58,80 @@ const DetailsScreen = ({commonStore, route}) => {
 
   const Tab1 = () => {
     return (
-      <View style={[{width: '100%', height: 200, backgroundColor: 'red'}]} />
+      <View style={{width: '100%', marginBottom: 80}}>
+        <SimpleGrid columns={3} spacingY={1} spacingX={1}>
+          {similarMovies.map(data => {
+            console.log(data);
+            return (
+              <View>
+                <CommonCard data={data} key={data.id} />
+              </View>
+            );
+          })}
+        </SimpleGrid>
+      </View>
     );
   };
 
   const Tab2 = () => {
     return (
-      <View style={{width: '100%', height: 200, backgroundColor: 'blue'}} />
+      <View style={{width: '100%', marginBottom: 80}}>
+        {getReviews.map(data => {
+          console.log(data.updated_at);
+          const formated_Date = data.updated_at;
+          const date = new Date(formated_Date); // formated_Date - SDK returned date
+          const timeAgo = timeSince(date);
+          return (
+            <View
+              style={{
+                width: '100%',
+                flexDirection: 'row',
+                backgroundColor: '#000000',
+                paddingTop: 20,
+              }}>
+              <View
+                width={'30%'}
+                justifyContent={'flex-start'}
+                alignItems={'center'}>
+                <Avatar
+                  source={{
+                    uri: `${data.author_details.avatar_path.substring(1)}`,
+                  }}
+                />
+              </View>
+              <View width={'70%'} paddingRight={5}>
+                <Text
+                  style={{fontSize: 18, color: '#ffffff', fontWeight: '600'}}>
+                  {data.author}
+                </Text>
+                <View justifyContent={'space-between'} alignItems={'center'} flexDirection={'row'} marginTop={2} marginBottom={2}>
+                  <View flexDirection={'row'}>
+                    {[...Array(5)].map((e, i) =>
+                      data.author_details.rating / 2 >= i ? (
+                        <Ionicons name="star" />
+                      ) : (
+                        <Ionicons name="star-outline" />
+                      ),
+                    )}
+                  </View>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color: 'grey',
+                      fontWeight: '300',
+                    }}>
+                    {timeAgo} ago
+                  </Text>
+                </View>
+                <Text
+                  style={{fontSize: 15, color: '#f4f4f4f4', fontWeight: '300'}}>
+                  {data.content}
+                </Text>
+              </View>
+            </View>
+          );
+        })}
+      </View>
     );
   };
 
@@ -237,35 +320,6 @@ const DetailsScreen = ({commonStore, route}) => {
               />
             </View>
           </ScrollView>
-
-          {/* 
-      <View>
-      
-      
-      
-      </View>
-      <View>
-      <TouchableOpacity
-      style={{
-        backgroundColor: 'white',
-        width: '50%',
-            borderRadius: 3,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: 35,
-          }}>
-          <Entypo name="controller-play" size={25} color="#000" />
-          <Text style={{fontWeight: '900'}}>Play</Text>
-        </TouchableOpacity>
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
-          <MaterialCommunityIcons name="download" size={25} color="#ffff" />
-          <Text style={{color: '#848484', fontSize: 12, fontWeight: 'bold'}}>
-            Download
-          </Text>
-          <Text>{actionDetails.overview}</Text>
-        </View>
-      </View> */}
         </>
       )}
     </View>

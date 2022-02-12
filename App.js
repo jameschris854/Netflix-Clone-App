@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 // import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -13,7 +13,8 @@ import OptionMenu from './src/components/OptionMenu.js';
 import {Provider} from 'mobx-react';
 import commonStore from './src/store/commonStore.js';
 //footer
-import tabData from './src/utils/footer'
+import tabData from './src/utils/footer';
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 const App = () => {
   const Tab = createBottomTabNavigator();
@@ -25,6 +26,15 @@ const App = () => {
     tabBarStyle: {...styles.tabBarStyle},
   };
 
+  useEffect(() => {
+    (async () => {
+      try {
+        changeNavigationBarColor('#121212');
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+  }, []);
 
   return (
     <Provider commonStore={commonStore}>
@@ -33,11 +43,13 @@ const App = () => {
           <NativeBaseProvider>
             <OptionMenu />
             <StatusBar
-              backgroundColor="#000"
+              backgroundColor="rgba(0,0,0,0)"
               barStyle={'default'}
               animated={true}
               hidden={false}
-              translucent={false}
+              translucent={true}
+              networkActivityIndicatorVisible={false}
+              showHideTransition
             />
             <Tab.Navigator screenOptions={tabOptions} initialRouteName="Home">
               {tabData.map(tab => (
@@ -45,7 +57,7 @@ const App = () => {
                   <Tab.Screen
                     options={{
                       tabBarLabel: tab.name,
-                      tabBarLabelStyle: {fontSize:9,bottom:7},
+                      tabBarLabelStyle: {fontSize: 9, bottom: 7},
                       tabBarIcon: ({focused, color}) =>
                         focused ? (
                           <tab.focusedIcon color={color} />
@@ -58,7 +70,7 @@ const App = () => {
                     component={tab.component}
                   />
                 </>
-                  ))}
+              ))}
             </Tab.Navigator>
           </NativeBaseProvider>
         </NavigationContainer>
@@ -70,11 +82,11 @@ const App = () => {
 const styles = StyleSheet.create({
   tabBarStyle: {
     position: 'absolute',
-    justifyContent:'center',
-    alignItems:'center',
-    paddingBottom:10,
-    paddingTop:0,
-    height:65,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 10,
+    paddingTop: 0,
+    height: 65,
     borderTopColor: '#121212',
     backgroundColor: '#121212',
   },

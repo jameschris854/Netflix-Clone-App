@@ -7,7 +7,8 @@ const API_KEY = '6a1058b7c16297df1884a589ce62565b';
 export default class Sync {
   static getMoviesNew = async () => {
     let apiType = commonStore.apiType;
-    let apiStr = (apiType === 'tv' ? `${apiType}/airing_today` : `${apiType}/upcoming`);
+    let apiStr =
+      apiType === 'tv' ? `${apiType}/airing_today` : `${apiType}/upcoming`;
 
     try {
       const randomMovieE = await axios.get(
@@ -25,13 +26,13 @@ export default class Sync {
 
   static getMoviesPopular = async (page = 1) => {
     let apiType = commonStore.apiType;
-    let apiStr = (apiType === 'tv' ? `${apiType}/popular` : `${apiType}/popular`);
+    let apiStr = apiType === 'tv' ? `${apiType}/popular` : `${apiType}/popular`;
 
     try {
       const randomMovieE = await axios.get(
         `${TMDB}${apiStr}?api_key=${API_KEY}&language=en-US&page=${page}&include_adult=false`,
       );
-      
+
       if (randomMovieE) {
         return randomMovieE;
       } else {
@@ -44,7 +45,8 @@ export default class Sync {
 
   static trendingList = async () => {
     let apiType = commonStore.apiType;
-    let apiStr = ( apiType === 'tv' ? `${apiType}/top_rated` : `${apiType}/now_playing`);
+    let apiStr =
+      apiType === 'tv' ? `${apiType}/top_rated` : `${apiType}/now_playing`;
     try {
       const randomMovieE = await axios.get(
         `${TMDB}${apiStr}?api_key=${API_KEY}&language=en-US&page=1&include_adult=false`,
@@ -61,32 +63,57 @@ export default class Sync {
     }
   };
 
-  static getDetails = async (id) => {
+  static getDetails = async id => {
     console.log(id);
     let apiType = commonStore.apiType;
 
-    try{
+    try {
       const details = await axios.get(
-        `${TMDB}${apiType}/${id}?api_key=${API_KEY}&language=en-US`
-      )
+        `${TMDB}${apiType}/${id}?api_key=${API_KEY}&language=en-US`,
+      );
       console.log(details.data);
-      return details
-    }catch (err) {
-      console.error('details', err);
+      return details;
+    } catch (err) {
+      console.error('details1', err);
     }
-  }
+  };
 
-  static getCredits = async (id) => {
+  static getCredits = async id => {
     let apiType = commonStore.apiType;
 
-    try{
+    try {
       const credits = await axios.get(
-        `${TMDB}${apiType}/${id}/credits?api_key=${API_KEY}&language=en-US`
-      )
-      return credits
-    }catch (err) {
-      console.error('details', err);
+        `${TMDB}${apiType}/${id}/credits?api_key=${API_KEY}&language=en-US`,
+      );
+      return credits;
+    } catch (err) {
+      console.error('getCredits', err);
     }
+  };
 
-  }
+  static getSimilar = async id => {
+    let apiType = commonStore.apiType;
+
+    try {
+      const similar = await axios.get(
+        `${TMDB}${apiType}/${id}/similar?api_key=${API_KEY}&language=en-US`,
+      );
+      return similar;
+    } catch (err) {
+      console.error('getSimilar', err);
+    }
+  };
+
+  static getReviews = async id => {
+    let apiType = commonStore.apiType;
+
+    try {
+      const reviews = await axios.get(
+        `${TMDB}${apiType}/${id}/reviews?api_key=${API_KEY}&language=en-US`,
+      );
+      return reviews;
+    } catch (err) {
+      console.error('getReviews', err);
+    }
+  };
 }

@@ -8,12 +8,13 @@ import Animated, {
   useAnimatedStyle,
   withDelay,
   Easing,
+  interpolate,
 } from 'react-native-reanimated';
 
 const SegmentTab = ({tab1, tab2, speed, delay, tabWidth}) => {
   const [index, setIndex] = useState(0);
   const sharedVal = useSharedValue(0);
-
+  const factor = Dimensions.get('window').width/50
   const toggleTab = i => {
     console.log(i);
     setIndex(i);
@@ -40,9 +41,21 @@ const SegmentTab = ({tab1, tab2, speed, delay, tabWidth}) => {
     };
   });
 
-  const animatedTabStyles = useAnimatedStyle(() => {
+  const animatedTab1Styles = useAnimatedStyle(() => {
+    // let factor = Math.round(50/Dimensions.get('window').width*100)
+    console.log(sharedVal.value)
     return {
-      marginRight: `-${sharedVal.value*2}%`,
+      right: sharedVal.value*factor,
+      display:sharedVal.value === 50 ? 'none' : 'flex'
+    };
+  });
+
+  const animatedTab2Styles = useAnimatedStyle(() => {
+    // let factor = Math.round(50/Dimensions.get('window').width*100)
+    console.log(sharedVal.value)
+    return {
+      right: sharedVal.value !== 50 ? sharedVal.value*factor : 0,
+      display:sharedVal.value === 50 ? 'flex' : 'none'
     };
   });
 
@@ -101,11 +114,11 @@ const SegmentTab = ({tab1, tab2, speed, delay, tabWidth}) => {
           ]}
         />
       </View>
-      <View style={{flexDirection:'row',backgroundColor:'green',width:'101%'}}>
-        <Animated.View style={[{width:'100%'},animatedTabStyles]}>
+      <View style={{flexDirection: 'row', width: '101%'}}>
+        <Animated.View style={[{width: '100%'}, animatedTab1Styles]}>
           <tab1.component />
         </Animated.View>
-        <Animated.View style={[{width:'100%'}]}>
+        <Animated.View style={[{width: '100%'}, animatedTab2Styles]}>
           <tab2.component />
         </Animated.View>
       </View>

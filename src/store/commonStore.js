@@ -157,6 +157,16 @@ class commonStore {
     data = await Sync.getCredits(id)
     return data?.data
   }
+
+  getSimilar = async (id) => {
+    res = await Sync.getSimilar(id)
+    return res?.data?.results
+  }
+
+  getReviews = async (id) => {
+    res = await Sync.getReviews(id)
+    return res?.data?.results
+  }
 }
 
 export default new commonStore();
