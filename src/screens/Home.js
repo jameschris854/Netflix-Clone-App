@@ -8,7 +8,6 @@ import {
   StatusBar,
 } from 'react-native';
 import {Image, Avatar, Actionsheet, Box} from 'native-base';
-import Sync from '../Sync/Sync';
 import {rand} from '../utils/utils';
 import CommonRow from '../components/CommonRow';
 import Animated, {
@@ -16,18 +15,16 @@ import Animated, {
   useAnimatedStyle,
   useAnimatedScrollHandler,
 } from 'react-native-reanimated';
-import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {SafeAreaView} from 'react-native';
 import {LinearGradient, Rect, Defs, Svg, Stop} from 'react-native-svg';
 import PosterOptions from '../components/PosterOptions';
 import {inject, observer} from 'mobx-react';
-import OptionMenu from '../components/OptionMenu';
+import HeaderStrip from '../components/HeaderStrip';
 import DetailsSheet from '../components/DetailsSheet';
-import SplashScreen from 'react-native-splash-screen'
+import SplashScreen from 'react-native-splash-screen';
 
-const Home = ({commonStore,navigation}) => {
+const Home = ({commonStore, navigation}) => {
   const [poster, setPoster] = useState(null);
 
   const scrollOffset = useSharedValue(0);
@@ -122,19 +119,25 @@ const Home = ({commonStore,navigation}) => {
       }
     }
   };
-  let actionDetails = commonStore.actionSheetDetails
+  let actionDetails = commonStore.actionSheetDetails;
   return (
     <>
       <SafeAreaView style={{flex: 0, backgroundColor: 'black'}} />
       <SafeAreaView style={{flex: 1, backgroundColor: '#0000003b'}}>
-          <Actionsheet
+        <Actionsheet
           isOpen={commonStore.actionSheetDetailsState}
-          onClose={() => (commonStore.setActionSheetState(false))}
+          onClose={() => commonStore.setActionSheetState(false)}
           hideDragIndicator={true}
           disableOverlay={false}>
-          {actionDetails && <Actionsheet.Content backgroundColor={'#2B2B2B'}>
-            <DetailsSheet actionDetails={actionDetails} store={commonStore} navigation={navigation}/>
-          </Actionsheet.Content>}
+          {actionDetails && (
+            <Actionsheet.Content backgroundColor={'#2B2B2B'}>
+              <DetailsSheet
+                actionDetails={actionDetails}
+                store={commonStore}
+                navigation={navigation}
+              />
+            </Actionsheet.Content>
+          )}
         </Actionsheet>
         <Animated.View
           style={[
@@ -142,41 +145,7 @@ const Home = ({commonStore,navigation}) => {
             {top: 0, translateY: 0},
             scrollStyle,
           ]}>
-          <View
-            style={{
-              width: '100%',
-              height: 50,
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() => init()}>
-            <Image
-              size={60}
-              style={{left: 0}}
-              source={{
-                uri: 'https://pngimg.com/uploads/netflix/netflix_PNG10.png',
-              }}
-              alt={'netflix'}
-            />
-            <Feather
-              name="search"
-              size={25}
-              color={'#FFFF'}
-              style={{marginLeft: 'auto', marginRight: 12}}
-            />
-            <Avatar
-              style={[styles.avatar]}
-              bg="lightBlue"
-              size={7}
-              // size={styles.avatar.size}
-              source={{
-                uri: 'https://pbs.twimg.com/profile_images/1309797238651060226/18cm6VhQ_400x400.jpg',
-              }}>
-              AK
-            </Avatar>
-          </View>
+            <HeaderStrip type={"home"}/>
           <View
             style={{
               flexDirection: 'row',
@@ -187,7 +156,6 @@ const Home = ({commonStore,navigation}) => {
               // backgroundColor: 'black',
             }}>
             {headerMenus.map(e => {
-              console.log(e);
               return (
                 <TouchableNativeFeedback
                   useForeground={true}
@@ -306,10 +274,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingBottom: 3,
     zIndex: 100,
-    marginTop:StatusBar.currentHeight
-  },
-  avatar: {
-    borderRadius: 5,
+    marginTop: StatusBar.currentHeight,
   },
   subHeaderStyle: {
     fontSize: 17,

@@ -9,7 +9,7 @@ import {
   SimpleGrid,
   Avatar,
 } from 'native-base';
-import {TouchableOpacity, StyleSheet} from 'react-native';
+import {TouchableOpacity, StyleSheet, StatusBar} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import React, {useEffect, useState} from 'react';
@@ -19,8 +19,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import SegmentTab from '../components/SegmentTab';
 import CommonCard from '../components/CommonCard';
 import {timeSince} from '../utils/utils';
+import HeaderStrip from '../components/HeaderStrip';
 
-const DetailsScreen = ({commonStore, route}) => {
+const DetailsScreen = ({commonStore, route, navigation}) => {
   const [actionDetails, setActionDetails] = useState(null);
   const [cast, setCast] = useState(null);
   const [crew, setCrew] = useState(null);
@@ -61,10 +62,15 @@ const DetailsScreen = ({commonStore, route}) => {
       <View style={{width: '100%', marginBottom: 80}}>
         <SimpleGrid columns={3} spacingY={1} spacingX={1}>
           {similarMovies.map(data => {
-            let poster = `https://image.tmdb.org/t/p/w500${data.poster_path}`
+            let poster = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
             return (
               <View>
-                <CommonCard data={data} poster={poster} key={data.id} id={data.id} />
+                <CommonCard
+                  data={data}
+                  poster={poster}
+                  key={data.id}
+                  id={data.id}
+                />
               </View>
             );
           })}
@@ -95,7 +101,11 @@ const DetailsScreen = ({commonStore, route}) => {
                 alignItems={'center'}>
                 <Avatar
                   source={{
-                    uri: `${data?.author_details?.avatar_path ? data.author_details.avatar_path.substring(1) : 'https://i.pinimg.com/originals/e3/94/30/e39430434d2b8207188f880ac66c6411.png'}`,
+                    uri: `${
+                      data?.author_details?.avatar_path
+                        ? data.author_details.avatar_path.substring(1)
+                        : 'https://i.pinimg.com/originals/e3/94/30/e39430434d2b8207188f880ac66c6411.png'
+                    }`,
                   }}
                 />
               </View>
@@ -104,7 +114,12 @@ const DetailsScreen = ({commonStore, route}) => {
                   style={{fontSize: 18, color: '#ffffff', fontWeight: '600'}}>
                   {data.author}
                 </Text>
-                <View justifyContent={'space-between'} alignItems={'center'} flexDirection={'row'} marginTop={2} marginBottom={2}>
+                <View
+                  justifyContent={'space-between'}
+                  alignItems={'center'}
+                  flexDirection={'row'}
+                  marginTop={2}
+                  marginBottom={2}>
                   <View flexDirection={'row'}>
                     {[...Array(5)].map((e, i) =>
                       data.author_details.rating / 2 >= i ? (
@@ -145,9 +160,10 @@ const DetailsScreen = ({commonStore, route}) => {
         alignItems: 'center',
         backgroundColor: '#000000',
       }}>
+      <HeaderStrip style={{marginTop: StatusBar.currentHeight}} navigation={navigation}/>
       {actionDetails && cast && (
         <>
-          <View style={{height: 45, width: '100%'}} />
+          {/* <View style={{height: 45, width: '100%'}} /> */}
           <View style={{width: '100%', height: '28%'}}>
             <Image
               backgroundColor={'rgb(72,72,72)'}
@@ -313,7 +329,7 @@ const DetailsScreen = ({commonStore, route}) => {
             <View style={{width: '100%'}}>
               <SegmentTab
                 tab1={{name: 'MORE LIKE THIS', component: Tab1}}
-                tab2={{name: 'TRAILERS & MORE', component: Tab2}}
+                tab2={{name: 'REVIEWS', component: Tab2}}
                 tabWidth={80}
                 speed={300}
                 delay={100}
