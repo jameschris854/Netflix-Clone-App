@@ -2,8 +2,10 @@ import React from 'react';
 import {StyleSheet, Text, FlatList, View, Dimensions} from 'react-native';
 import {AddIcon, Center, ScrollView} from 'native-base';
 import {inject, observer} from 'mobx-react';
+import { useNavigation } from '@react-navigation/native';
 
 const OptionMenu = ({commonStore}) => {
+  const navigation = useNavigation()
   const menu = commonStore.optionList;
   return (
     <>
@@ -33,12 +35,8 @@ const OptionMenu = ({commonStore}) => {
                 renderItem={(e, i) => (
                   <Text
                     onPress={() => {
-                      if(e.item.click !== 'cat'){
-                        commonStore.setHomeMode(e.item.click);
-                        commonStore.hideOption();
-                      }else{
-                        console.log('nav here');
-                      }
+                      commonStore.hideOption();
+                      e.item.click !== 'cat' ? commonStore.setHomeMode(e.item.click) : navigation.navigate('Categories',{category:e})
                     }}
                     style={[
                       {color: '#ffff', marginVertical: 10},

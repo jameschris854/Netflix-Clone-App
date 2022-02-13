@@ -43,6 +43,9 @@ class commonStore {
   @observable
   catagoryList = []
 
+  @observable
+  categoryItems = []
+
   @action
   setNewList = (data) => {
       this.newList = data.data.results
@@ -136,6 +139,12 @@ class commonStore {
     this.generes.map(g => this.catagoryList.push({name:g.name,click:'cat',isActive:false}))
   }
 
+  @action
+  setCategoryItems = async (data) => {
+    this.categoryItems = data.results
+    console.log('cat   ',this.categoryItems);
+  }
+
   getNewList = async () => {
     data = await Sync.getMoviesNew();
     this.setNewList(data);
@@ -180,6 +189,11 @@ class commonStore {
     res = await Sync.getGenre()
     console.log(JSON.stringify(res));
     this.setGeneres(res)
+  }
+
+  getCategoryItems = async (cat) => {
+    res = await Sync.getCategoryItems(cat)
+    this.setCategoryItems(res.data)
   }
 }
 

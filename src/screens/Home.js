@@ -17,12 +17,11 @@ import Animated, {
 } from 'react-native-reanimated';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {SafeAreaView} from 'react-native';
-import {LinearGradient, Rect, Defs, Svg, Stop} from 'react-native-svg';
-import PosterOptions from '../components/PosterOptions';
 import {inject, observer} from 'mobx-react';
 import HeaderStrip from '../components/HeaderStrip';
 import DetailsSheet from '../components/DetailsSheet';
 import SplashScreen from 'react-native-splash-screen';
+import PosterCard from '../components/PosterCard';
 
 const Home = ({commonStore, navigation}) => {
   const [poster, setPoster] = useState(null);
@@ -76,8 +75,7 @@ const Home = ({commonStore, navigation}) => {
       scrollOffset.value = event.contentOffset.y;
     },
   });
-  const screenWidth = Dimensions.get('window').width;
-  const screenHeight = Dimensions.get('window').height;
+
   const headerMenus = [{name: 'Categories', option: true}];
   if (commonStore.homeMode === 'home') {
     headerMenus.unshift({name: 'Movies', option: false});
@@ -190,51 +188,7 @@ const Home = ({commonStore, navigation}) => {
               justifyContent: 'flex-start',
             }}
             onScroll={scrollHandler}>
-            <View style={{width: '100%', height: screenHeight - 300}}>
-              <Image
-                key={poster.id}
-                // source={{uri: `https://image.tmdb.org/t/p/w500/9xaAT3V3I9xxqnNiEjCivNFfdlh.jpg`}}
-                source={{
-                  uri: `https://image.tmdb.org/t/p/w500/${poster.poster_path}`,
-                }}
-                backgroundColor={'red'}
-                height={'100%'}
-                width={'100%'}
-                resizeMode="stretch"
-                alt="cover pic"
-              />
-              <View
-                style={{
-                  position: 'absolute',
-                  height: 180,
-                  width: screenWidth + 10,
-                  bottom: -1,
-                  left: 0,
-                }}>
-                <Svg height="180" width={screenWidth + 10}>
-                  <Defs>
-                    <LinearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
-                      <Stop
-                        offset="0"
-                        stopColor="rgb(0,0,0,0.9)"
-                        stopOpacity="0"
-                      />
-                      <Stop
-                        offset="0.99"
-                        stopColor="rgb(0,0,0,0.9)"
-                        stopOpacity="0.9"
-                      />
-                    </LinearGradient>
-                  </Defs>
-                  <Rect
-                    width={screenWidth + 5}
-                    height={180}
-                    fill="url(#grad)"
-                  />
-                </Svg>
-              </View>
-            </View>
-            <PosterOptions details={poster} />
+            <PosterCard poster={poster} />
             <CommonRow data={commonStore.newList} title={'New This Week'} />
             <CommonRow
               data={commonStore.popularList}

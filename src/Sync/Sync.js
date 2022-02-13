@@ -126,4 +126,18 @@ export default class Sync {
       console.error('getGenre', err);
     }
   }
+
+  static getCategoryItems = async (cat) => {
+    let apiType = commonStore.apiType;
+
+    try {
+      const catRes = await axios.get(
+        `${TMDB}search/${apiType}?api_key=${API_KEY}&query=${cat}&language=en-US`,
+      );
+      return catRes;
+    } catch (err) {
+      console.error('getCategoryItyems', err);
+    }
+  }
+
 }

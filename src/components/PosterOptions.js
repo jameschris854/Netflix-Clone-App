@@ -101,7 +101,6 @@ const PosterOptions = ({details}) => {
       cat.push(res[0].name);
     });
     setCategories(cat);
-    console.log(categories, 'cat');
   }, []);
 
   const Generes = () => {
