@@ -37,6 +37,12 @@ class commonStore {
   @observable
   actionSheetDetailsState = false
 
+  @observable
+  generes = []
+
+  @observable
+  catagoryList = []
+
   @action
   setNewList = (data) => {
       this.newList = data.data.results
@@ -73,7 +79,6 @@ class commonStore {
         return d
       };
       let d = shuffleArray(data.data.results)
-      console.log(d);
       this.trendingList = d
   }
 
@@ -89,6 +94,7 @@ class commonStore {
       await this.getPopularList()
       await this.getTrendingList()
       await this.getDownloadList()
+      await this.getGenre()
   }
 
   @action
@@ -98,16 +104,13 @@ class commonStore {
 
   @action
   updateApiType = (data) => {
-    console.log('up api',data);
     this.apiType = data
   }
   @action 
   setHomeMode = async (data) =>  {
-    console.log('-----change to ------',data);
     if(data === 'home'){
       this.updateApiType('movie')
     }else if(data === 'tv'){
-      console.log('hi');
       this.updateApiType('tv')
     }else{
       this.updateApiType('movie')
@@ -127,8 +130,13 @@ class commonStore {
     this.setActionSheetState(true)
   }
 
+  @action
+  setGeneres = async (data) => {
+    this.generes = data?.data.genres
+    this.generes.map(g => this.catagoryList.push({name:g.name,click:'cat',isActive:false}))
+  }
+
   getNewList = async () => {
-    console.log('setNewList');
     data = await Sync.getMoviesNew();
     this.setNewList(data);
   };
@@ -166,6 +174,12 @@ class commonStore {
   getReviews = async (id) => {
     res = await Sync.getReviews(id)
     return res?.data?.results
+  }
+
+  getGenre = async () => {
+    res = await Sync.getGenre()
+    console.log(JSON.stringify(res));
+    this.setGeneres(res)
   }
 }
 

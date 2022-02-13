@@ -94,7 +94,6 @@ const PosterOptions = ({details}) => {
   ];
 
   useEffect(() => {
-    console.log(details);
     let data = details.genre_ids;
     let cat = [];
     data.map(e => {

@@ -16,7 +16,6 @@ const SegmentTab = ({tab1, tab2, speed, delay, tabWidth}) => {
   const sharedVal = useSharedValue(0);
   const factor = Dimensions.get('window').width/50
   const toggleTab = i => {
-    console.log(i);
     setIndex(i);
     i === 0
       ? (sharedVal.value = withDelay(
@@ -43,7 +42,6 @@ const SegmentTab = ({tab1, tab2, speed, delay, tabWidth}) => {
 
   const animatedTab1Styles = useAnimatedStyle(() => {
     // let factor = Math.round(50/Dimensions.get('window').width*100)
-    console.log(sharedVal.value)
     return {
       right: sharedVal.value*factor,
       display:sharedVal.value === 50 ? 'none' : 'flex'
@@ -52,7 +50,6 @@ const SegmentTab = ({tab1, tab2, speed, delay, tabWidth}) => {
 
   const animatedTab2Styles = useAnimatedStyle(() => {
     // let factor = Math.round(50/Dimensions.get('window').width*100)
-    console.log(sharedVal.value)
     return {
       right: sharedVal.value !== 50 ? sharedVal.value*factor : 0,
       display:sharedVal.value === 50 ? 'flex' : 'none'

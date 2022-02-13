@@ -83,7 +83,6 @@ const DetailsScreen = ({commonStore, route, navigation}) => {
     return (
       <View style={{width: '100%', marginBottom: 80}}>
         {getReviews.map(data => {
-          console.log(data.updated_at);
           const formated_Date = data.updated_at;
           const date = new Date(formated_Date); // formated_Date - SDK returned date
           const timeAgo = timeSince(date);

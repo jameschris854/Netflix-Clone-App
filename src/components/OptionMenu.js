@@ -1,22 +1,23 @@
 import React from 'react';
 import {StyleSheet, Text, FlatList, View, Dimensions} from 'react-native';
-import {AddIcon, Center } from 'native-base';
+import {AddIcon, Center, ScrollView} from 'native-base';
 import {inject, observer} from 'mobx-react';
 
 const OptionMenu = ({commonStore}) => {
   const menu = commonStore.optionList;
   return (
     <>
-    {commonStore.optionState && <View
-      style={{
-        position: 'absolute',
-        top: 0,
-        width: '105%',
-        height: Dimensions.get('window').height,
-        zIndex: 100000,
-        backgroundColor: 'rgba(14 ,14 ,14 ,0.95)',
-      }}>
-      {/* <View
+      {commonStore.optionState && (
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            width: '105%',
+            height: Dimensions.get('window').height,
+            zIndex: 100000,
+            backgroundColor: 'rgba(14 ,14 ,14 ,0.95)',
+          }}>
+          {/* <View
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -25,59 +26,70 @@ const OptionMenu = ({commonStore}) => {
           top:'50%',
           backgroundColor:'pink'
         }}> */}
-      <FlatList
-        data={menu}
-        renderItem={(e, i) => (
-          <Text
-            onPress={() => {
-              commonStore.setHomeMode(e.item.click);
-              commonStore.hideOption();
-            }}
-            style={[
-              {color: '#ffff', marginVertical: 10},
-              e.item.isActive
-                ? {fontSize: 25, fontWeight: 'bold'}
-                : {fontSize: 20, fontWeight: 'normal'},
-            ]}
-            key={i}>
-            {e.item.name}
-          </Text>
-        )}
-        centerContent={true}
-        contentContainerStyle={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100%',
-        }}
-      />
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 100,
-          left: Dimensions.get('window').width / 2 - 25,
-          backgroundColor: '#ffff',
-          padding: 20,
-          borderRadius: 50,
-        }}>
-        <Text onPress={() => commonStore.hideOption()}>
-          <Center>
-            <AddIcon
+          <>
+            <ScrollView contentContainerStyle={{height:'100%'}} >
+              <FlatList
+                data={menu}
+                renderItem={(e, i) => (
+                  <Text
+                    onPress={() => {
+                      if(e.item.click !== 'cat'){
+                        commonStore.setHomeMode(e.item.click);
+                        commonStore.hideOption();
+                      }else{
+                        console.log('nav here');
+                      }
+                    }}
+                    style={[
+                      {color: '#ffff', marginVertical: 10},
+                      e.item.isActive
+                        ? {fontSize: 25, fontWeight: 'bold'}
+                        : {fontSize: 20, fontWeight: 'normal'},
+                    ]}
+                    key={i}>
+                    {e.item.name}
+                  </Text>
+                )}
+                centerContent={true}
+                // StickyHeaderComponent={() => <Text>hiashiasdasdhiasdasdhiasdasdhiasdasdhiasdasdhiasdasdhiasdasdhiasdasdhiasdasddasd</Text>}
+                contentContainerStyle={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  paddingTop:'30%'
+                }}
+              />
+            </ScrollView>
+            <View
               style={{
-                transform: [
-                  {
-                    rotateZ: '45deg',
-                  },
-                ],
-              }}
-              centerContent={true}
-              size="6"
-              color="#000"
-            />
-          </Center>
-        </Text>
-      </View>
-      {/* </View> */}
-    </View>}
+                position: 'absolute',
+                bottom: 50,
+                left: Dimensions.get('window').width / 2 - 25,
+                backgroundColor: '#ffff',
+                padding: 20,
+                borderRadius: 50,
+                
+              }}>
+              <Text onPress={() => commonStore.hideOption()}>
+                <Center>
+                  <AddIcon
+                    style={{
+                      transform: [
+                        {
+                          rotateZ: '45deg',
+                        },
+                      ],
+                    }}
+                    centerContent={true}
+                    size="6"
+                    color="#000"
+                  />
+                </Center>
+              </Text>
+            </View>
+          </>
+          {/* </View> */}
+        </View>
+      )}
     </>
   );
 };

@@ -89,7 +89,6 @@ const Home = ({commonStore, navigation}) => {
   }
 
   const handleMenuClick = (data, store) => {
-    console.log(data, 'here');
     if (data.option) {
       if (data.name === 'Movies') {
         store.setOptionList([
@@ -104,11 +103,7 @@ const Home = ({commonStore, navigation}) => {
           {name: 'Movies', click: 'movies', isActive: false},
         ]);
       } else {
-        store.setOptionList([
-          {name: 'cat', click: 'home', isActive: false},
-          {name: 'cat', click: 'tv', isActive: true},
-          {name: 'cat', click: 'movies', isActive: false},
-        ]);
+        store.setOptionList(commonStore.catagoryList);
       }
       store.showOption();
     } else {

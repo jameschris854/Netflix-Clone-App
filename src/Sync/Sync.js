@@ -51,7 +51,6 @@ export default class Sync {
       const randomMovieE = await axios.get(
         `${TMDB}${apiStr}?api_key=${API_KEY}&language=en-US&page=1&include_adult=false`,
       );
-      console.log(randomMovieE);
 
       if (randomMovieE) {
         return randomMovieE;
@@ -64,14 +63,12 @@ export default class Sync {
   };
 
   static getDetails = async id => {
-    console.log(id);
     let apiType = commonStore.apiType;
 
     try {
       const details = await axios.get(
         `${TMDB}${apiType}/${id}?api_key=${API_KEY}&language=en-US`,
       );
-      console.log(details.data);
       return details;
     } catch (err) {
       console.error('details1', err);
@@ -116,4 +113,17 @@ export default class Sync {
       console.error('getReviews', err);
     }
   };
+
+  static getGenre = async () => {
+    let apiType = commonStore.apiType;
+
+    try {
+      const genre = await axios.get(
+        `${TMDB}genre/${apiType}/list?api_key=${API_KEY}&language=en-US`,
+      );
+      return genre;
+    } catch (err) {
+      console.error('getGenre', err);
+    }
+  }
 }

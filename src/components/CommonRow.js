@@ -21,7 +21,6 @@ const CommonRow = ({data, title, type,commonStore}) => {
         type: 'download',
       });
     }
-    console.log(data);
   }, []);
 
   const card = ({poster, type ,key}) => {
