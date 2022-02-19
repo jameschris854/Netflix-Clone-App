@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '../screens/Home';
 import DetailsScreen from '../screens/DetailsScreen';
 import Categories from '../screens/Categories';
+import AppIntro from '../screens/AppIntro'
+import SplashScreen from 'react-native-splash-screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,4 +20,14 @@ const HomeStackNavigator = () => {
   );
 };
 
-export {HomeStackNavigator}
+const AuthStackNavigator = () => {
+  SplashScreen.hide();
+
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name="AppIntro" component={AppIntro} />
+    </Stack.Navigator>
+  )
+}
+
+export {HomeStackNavigator,AuthStackNavigator}

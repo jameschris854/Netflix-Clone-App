@@ -15,6 +15,9 @@ import commonStore from './src/store/commonStore.js';
 //footer
 import tabData from './src/utils/footer';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import rootStore from './src/store/rootStore.js';
+import authStore from './src/store/authStore.js';
+import { AuthStackNavigator } from './src/Navigators/StackNavigator.js';
 
 const App = () => {
   const Tab = createBottomTabNavigator();
@@ -29,7 +32,7 @@ const App = () => {
   useEffect(() => {
     (async () => {
       try {
-        changeNavigationBarColor('#121212');
+        changeNavigationBarColor('#000000');
       } catch (e) {
         console.log(e);
       }
@@ -37,7 +40,7 @@ const App = () => {
   }, []);
 
   return (
-    <Provider commonStore={commonStore}>
+    <Provider commonStore={rootStore.commonStore} authStore={rootStore.authStore}>
       <SafeAreaProvider>
         <NavigationContainer>
           <NativeBaseProvider>
@@ -51,7 +54,9 @@ const App = () => {
               networkActivityIndicatorVisible={false}
               showHideTransition
             />
-            <Tab.Navigator screenOptions={tabOptions} initialRouteName="Home">
+            {authStore.isVerified ? (
+              <Tab.Navigator screenOptions={tabOptions} initialRouteName="Home">
+                {changeNavigationBarColor('#121212')}
               {tabData.map(tab => (
                 <>
                   <Tab.Screen
@@ -72,6 +77,9 @@ const App = () => {
                 </>
               ))}
             </Tab.Navigator>
+            ):
+            <AuthStackNavigator />
+            }
           </NativeBaseProvider>
         </NavigationContainer>
       </SafeAreaProvider>

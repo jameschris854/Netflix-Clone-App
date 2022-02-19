@@ -98,7 +98,7 @@ const PosterOptions = ({details}) => {
     let cat = [];
     data.map(e => {
       let res = genres.filter(gen => e === gen.id);
-      cat.push(res[0].name);
+      res[0] ? cat.push(res[0].name) : null
     });
     setCategories(cat);
   }, []);

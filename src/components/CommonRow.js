@@ -82,6 +82,7 @@ const CommonRow = ({data, title, type,commonStore}) => {
       <Text style={[styles.Header]}>{title}</Text>
     <FlatList
         horizontal={true}
+        showsHorizontalScrollIndicator={false}
         data={data}
         renderItem={(item,i) => {
           if(item.item.type === 'download'){

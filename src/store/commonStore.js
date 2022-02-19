@@ -2,8 +2,9 @@ import {observable, action, makeAutoObservable, makeObservable} from 'mobx';
 import Sync from '../Sync/Sync';
 
 class commonStore {
-  constructor() {
+  constructor(root) {
     makeObservable(this);
+    this.root = root
   }
   // global
   @observable
@@ -197,4 +198,4 @@ class commonStore {
   }
 }
 
-export default new commonStore();
+export default commonStore;

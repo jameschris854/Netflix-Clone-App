@@ -5,7 +5,6 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const HeaderStrip = ({style = {}, type, navigation}) => {
-  console.error(navigation);
   return (
     <View
       style={{
@@ -51,15 +50,23 @@ const HeaderStrip = ({style = {}, type, navigation}) => {
             name="ios-arrow-back"
             size={25}
             color={'#FFFF'}
-            style={{marginLeft:20}}
+            style={{marginLeft: 20}}
             onPress={() => navigation.goBack()}
           />
-          <Text style={{fontSize:20,fontWeight:'bold',color:"#ffffff",marginLeft:20}}>Categories</Text>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#ffffff',
+              marginLeft: 20,
+            }}>
+            Categories
+          </Text>
           <Feather
             name="search"
             size={25}
             color={'#FFFF'}
-            style={{marginLeft: 'auto',marginRight:15}}
+            style={{marginLeft: 'auto', marginRight: 15}}
           />
           <Avatar
             style={[styles.avatar]}
@@ -71,6 +78,25 @@ const HeaderStrip = ({style = {}, type, navigation}) => {
             }}>
             AK
           </Avatar>
+        </>
+      ) : type === 'AppIntro' ? (
+        <>
+          <Image
+            size={60}
+            style={{left: 0}}
+            source={{
+              uri: 'https://pngimg.com/uploads/netflix/netflix_PNG10.png',
+            }}
+            alt={'netflix'}
+          />
+          <Text  style={{marginLeft: 'auto', marginRight: 12,color:'#ffffff'}}>PRIVACY</Text>
+          <Text style={{color:'#ffffff', marginRight: 12}}>SIGN IN</Text>
+          <Feather
+            name="more-vertical"
+            size={18}
+            color={"grey"}
+            style={{marginRight:12}}
+          />
         </>
       ) : (
         <>
