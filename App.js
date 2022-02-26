@@ -9,17 +9,15 @@ import {NativeBaseProvider, StatusBar} from 'native-base';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 // global components
 import OptionMenu from './src/components/OptionMenu.js';
-//store
-import {Provider} from 'mobx-react';
-import commonStore from './src/store/commonStore.js';
 //footer
 import tabData from './src/utils/footer';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import rootStore from './src/store/rootStore.js';
-import authStore from './src/store/authStore.js';
 import { AuthStackNavigator } from './src/Navigators/StackNavigator.js';
+import { inject, observer } from 'mobx-react';
+import commonStore from './src/store/commonStore.js';
 
-const App = () => {
+const App = ({authStore}) => {
   const Tab = createBottomTabNavigator();
 
   const tabOptions = {
@@ -38,9 +36,8 @@ const App = () => {
       }
     })();
   }, []);
-
+  console.log(rootStore.commonStore.apiType);
   return (
-    <Provider commonStore={rootStore.commonStore} authStore={rootStore.authStore}>
       <SafeAreaProvider>
         <NavigationContainer>
           <NativeBaseProvider>
@@ -54,7 +51,7 @@ const App = () => {
               networkActivityIndicatorVisible={false}
               showHideTransition
             />
-            {authStore.isVerified ? (
+            {authStore.isUserVerified ? (
               <Tab.Navigator screenOptions={tabOptions} initialRouteName="Home">
                 {changeNavigationBarColor('#121212')}
               {tabData.map(tab => (
@@ -83,7 +80,6 @@ const App = () => {
           </NativeBaseProvider>
         </NavigationContainer>
       </SafeAreaProvider>
-    </Provider>
   );
 };
 
@@ -100,4 +96,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default inject('authStore')(observer(App));

@@ -1,15 +1,15 @@
 import axios from 'axios';
-import commonStore from '../store/commonStore';
+import rootStore from '../store/rootStore';
 
 const TMDB = 'https://api.themoviedb.org/3/';
 const API_KEY = '6a1058b7c16297df1884a589ce62565b';
 
 export default class Sync {
   static getMoviesNew = async () => {
-    let apiType = commonStore.apiType;
+    let apiType = rootStore?.commonStore.apiType;
     let apiStr =
       apiType === 'tv' ? `${apiType}/airing_today` : `${apiType}/upcoming`;
-
+    console.log(`${TMDB}${apiStr}?api_key=${API_KEY}&language=en-US&page=1&include_adult=false`);
     try {
       const randomMovieE = await axios.get(
         `${TMDB}${apiStr}?api_key=${API_KEY}&language=en-US&page=1&include_adult=false`,
@@ -25,7 +25,7 @@ export default class Sync {
   };
 
   static getMoviesPopular = async (page = 1) => {
-    let apiType = commonStore.apiType;
+    let apiType = rootStore?.commonStore.apiType;
     let apiStr = apiType === 'tv' ? `${apiType}/popular` : `${apiType}/popular`;
 
     try {
@@ -44,7 +44,7 @@ export default class Sync {
   };
 
   static trendingList = async () => {
-    let apiType = commonStore.apiType;
+    let apiType = rootStore?.commonStore.apiType;
     let apiStr =
       apiType === 'tv' ? `${apiType}/top_rated` : `${apiType}/now_playing`;
     try {
@@ -63,7 +63,7 @@ export default class Sync {
   };
 
   static getDetails = async id => {
-    let apiType = commonStore.apiType;
+    let apiType = rootStore?.commonStore.apiType;
 
     try {
       const details = await axios.get(
@@ -76,7 +76,7 @@ export default class Sync {
   };
 
   static getCredits = async id => {
-    let apiType = commonStore.apiType;
+    let apiType = rootStore?.commonStore.apiType;
 
     try {
       const credits = await axios.get(
@@ -89,7 +89,7 @@ export default class Sync {
   };
 
   static getSimilar = async id => {
-    let apiType = commonStore.apiType;
+    let apiType = rootStore?.commonStore.apiType;
 
     try {
       const similar = await axios.get(
@@ -102,7 +102,7 @@ export default class Sync {
   };
 
   static getReviews = async id => {
-    let apiType = commonStore.apiType;
+    let apiType = rootStore?.commonStore.apiType;
 
     try {
       const reviews = await axios.get(
@@ -115,7 +115,7 @@ export default class Sync {
   };
 
   static getGenre = async () => {
-    let apiType = commonStore.apiType;
+    let apiType = rootStore?.commonStore.apiType;
 
     try {
       const genre = await axios.get(
@@ -128,7 +128,7 @@ export default class Sync {
   }
 
   static getCategoryItems = async (cat) => {
-    let apiType = commonStore.apiType;
+    let apiType = rootStore?.commonStore.apiType;
 
     try {
       const catRes = await axios.get(

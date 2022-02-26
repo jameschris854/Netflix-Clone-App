@@ -22,9 +22,11 @@ import HeaderStrip from '../components/HeaderStrip';
 import DetailsSheet from '../components/DetailsSheet';
 import SplashScreen from 'react-native-splash-screen';
 import PosterCard from '../components/PosterCard';
+import HomeLoader from '../Loaders/HomeLoader';
 
 const Home = ({commonStore, navigation}) => {
   const [poster, setPoster] = useState(null);
+  const [isLoading, setLoading] = useState(true);
 
   const scrollOffset = useSharedValue(0);
   useEffect(() => {
@@ -39,6 +41,7 @@ const Home = ({commonStore, navigation}) => {
       await init();
       setInterval(posterInterval, 60000);
       SplashScreen.hide();
+      setLoading(false);
     })();
     return () => {
       clearInterval(posterInterval);
@@ -138,7 +141,7 @@ const Home = ({commonStore, navigation}) => {
             {top: 0, translateY: 0},
             scrollStyle,
           ]}>
-            <HeaderStrip type={"home"}/>
+          <HeaderStrip type={'home'} />
           <View
             style={{
               flexDirection: 'row',
@@ -175,37 +178,45 @@ const Home = ({commonStore, navigation}) => {
             })}
           </View>
         </Animated.View>
-        {poster &&
-        commonStore.newList?.length &&
-        commonStore.popularList?.length ? (
-          <Animated.ScrollView
-            style={{
-              backgroundColor: '#000',
-              height: '100%',
-              width: '100%',
-            }}
-            contentContainerStyle={{
-              justifyContent: 'flex-start',
-            }}
-            onScroll={scrollHandler}>
-            <PosterCard poster={poster} />
-            <CommonRow data={commonStore.newList} title={'New This Week'} />
-            <CommonRow
-              data={commonStore.popularList}
-              title={'Popular on Netflix'}
-            />
-            <CommonRow data={commonStore.trendingList} title={'Trending Now'} />
-            <CommonRow
-              data={commonStore.downloadList}
-              title={'Downloads For You'}
-              type={'download'}
-            />
-            <View style={{width: '100%', height: 100}} />
-            <Text onPress={() => init()} key={2} style={{color: '#ffff'}}>
-              Home
-            </Text>
-          </Animated.ScrollView>
-        ) : null}
+        {/* {poster &&
+            commonStore.newList?.length &&
+          commonStore.popularList?.length ? ( */}
+        <Animated.ScrollView
+          style={{
+            backgroundColor: '#000',
+            height: '100%',
+            width: '100%',
+          }}
+          contentContainerStyle={{
+            justifyContent: 'flex-start',
+          }}
+          onScroll={scrollHandler}>
+          {isLoading ? (
+            <HomeLoader />
+          ) : (
+            <>
+              <PosterCard poster={poster} />
+              <CommonRow data={commonStore.newList} title={'New This Week'} />
+              <CommonRow
+                data={commonStore.popularList}
+                title={'Popular on Netflix'}
+              />
+              <CommonRow
+                data={commonStore.trendingList}
+                title={'Trending Now'}
+              />
+              <CommonRow
+                data={commonStore.downloadList}
+                title={'Downloads For You'}
+                type={'download'}
+              />
+              <View style={{width: '100%', height: 100}} />
+              <Text onPress={() => init()} key={2} style={{color: '#ffff'}}>
+                Home
+              </Text>
+            </>
+          )}
+        </Animated.ScrollView>
       </SafeAreaView>
     </>
   );

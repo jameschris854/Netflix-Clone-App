@@ -112,6 +112,7 @@ class commonStore {
   }
   @action 
   setHomeMode = async (data) =>  {
+    console.log(data,this.apiType);
     if(data === 'home'){
       this.updateApiType('movie')
     }else if(data === 'tv'){

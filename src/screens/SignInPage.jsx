@@ -1,13 +1,16 @@
-import {Button} from 'native-base';
 import React, { useState } from 'react';
-import {StatusBar, Text, Touchable, View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {StatusBar, Text, View , TouchableHighlight} from 'react-native';
 import HeaderStrip from '../components/HeaderStrip';
 import InputPrimary from '../components/InputPrimary';
+import {inject, observer} from 'mobx-react';
 
-const SignInPage = ({navigation}) => {
+const SignInPage = ({navigation,authStore}) => {
   const [email,setEmail] = useState(false)
   const [password,setPassword] = useState(false)
+
+  const handleLogin = () => {
+    return authStore.setUserVerification(true)
+  } 
 
   return (
     <View style={{backgroundColor: '#000000', height: '100%', width: '100%'}}>
@@ -34,8 +37,9 @@ const SignInPage = ({navigation}) => {
           type='password'
         />
         <View style={{ width: '89%'}}>
-          <TouchableOpacity
-          activeOpacity={0.5}
+          <TouchableHighlight
+          onPress={handleLogin}
+          underlayColor={"rgba(255,255,255,0.2)"}
             style={{
               borderColor: '#ffffff',
               borderWidth: 1,
@@ -47,7 +51,7 @@ const SignInPage = ({navigation}) => {
               borderRadius:10
             }}>
             <Text style={{color: '#ffffff',fontSize:20}}>Sign In</Text>
-          </TouchableOpacity>
+          </TouchableHighlight>
         </View>
         <Text style={{color:'lightgrey',marginTop:30,fontSize:16}}>Need help?</Text>
         <Text style={{color:'lightgrey',marginTop:40,fontSize:16}}>New to Netflix? Sign up now.</Text>
@@ -57,4 +61,4 @@ const SignInPage = ({navigation}) => {
   );
 };
 
-export default SignInPage;
+export default inject('authStore')(observer(SignInPage));

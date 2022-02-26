@@ -8,7 +8,13 @@ class authStore {
     }
 
     @observable 
-    isVerified = false
+    isUserVerified = false
+
+    @action
+    setUserVerification = (value) => {
+        this.isUserVerified = value
+        console.log(this.isUserVerified, 'setting verification state');
+    }
 
 }
 
