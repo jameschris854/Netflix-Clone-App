@@ -5,7 +5,7 @@ import Carousal from '../components/Carousal';
 import HeaderStrip from '../components/HeaderStrip';
 import colors from '../utils/colors';
 
-const AppIntro = () => {
+const AppIntro = ({navigation}) => {
   const slideImages = [
     {
       id: 1,
@@ -41,7 +41,7 @@ const AppIntro = () => {
         }}>
         <Carousal style={{width:Dimensions.get("screen").width,height:Dimensions.get("screen").height*0.86}} images={slideImages} />
       </View>
-      <Button style={{backgroundColor:colors.primaryColor,width:'95%',height:47,borderRadius:3}}>
+      <Button style={{backgroundColor:colors.primaryColor,width:'95%',height:47,borderRadius:3}} onPress={() => navigation.navigate('SignInPage') }>
           <Text style={{color: '#ffffff',fontWeight:'800',fontSize:16,letterSpacing:2}}>GET STARTED</Text>
       </Button>
     </View>

@@ -6,6 +6,7 @@ import DetailsScreen from '../screens/DetailsScreen';
 import Categories from '../screens/Categories';
 import AppIntro from '../screens/AppIntro'
 import SplashScreen from 'react-native-splash-screen';
+import SignInPage from '../screens/SignInPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,7 @@ const AuthStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="AppIntro" component={AppIntro} />
+        <Stack.Screen name="SignInPage" component={SignInPage} />
     </Stack.Navigator>
   )
 }

@@ -3,6 +3,7 @@ import React from 'react';
 import {StyleSheet, Text} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Logo from '../Assets/svg/Logo';
 
 const HeaderStrip = ({style = {}, type, navigation}) => {
   return (
@@ -98,6 +99,17 @@ const HeaderStrip = ({style = {}, type, navigation}) => {
             style={{marginRight:12}}
           />
         </>
+      ) : type === 'SignIn' ? (
+          <>
+            <Ionicons
+              name="ios-arrow-back"
+              size={25}
+              color={'#FFFF'}
+              onPress={() => navigation.goBack()}
+              style={{marginLeft:15}}
+            />
+            <Logo style={{width:100,height:100,marginLeft:15,marginRight:"auto"}}/>
+          </>
       ) : (
         <>
           <Ionicons
